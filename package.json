@@ -1,0 +1,12 @@
+{
+    "name": "Amanuensis",
+    "description":"Character manager"
+    "author":,
+    "dependencies": {
+        "express":"*",
+        "mongodb":"*",
+        "underscore":"*",
+        "jquery":"*"
+    }
+    "engeine":"<Node Version>"
+}
