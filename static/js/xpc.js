@@ -51,7 +51,7 @@ calc_simple_stats: function(merged_mods){
         var sum = 0;
         var var_encountered = false;
         for(i in merged_mods[stat]){
-            if(typeof merged_mods[stat][i].value != number){
+            if(typeof merged_mods[stat][i].value != "number"){
                 var_encountered = true;
                 break;
             }else{
