@@ -1,12 +1,14 @@
 {
     "name": "Amanuensis",
-    "description":"Character manager"
-    "author":,
+    "description":"Character manager",
+    "author":"Blake Curry",
     "dependencies": {
         "express":"*",
         "mongodb":"*",
         "underscore":"*",
-        "jquery":"*"
-    }
-    "engeine":"<Node Version>"
+        "jquery":"*",
+        "mongodb-rest":"*",
+        "amdefine":"*"
+    },
+    "engeine":"v0.10.5"
 }

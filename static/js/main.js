@@ -15,6 +15,23 @@ function getAllChars(){
     });
 }
 
+function getCharList(){
+    $.ajax({
+        url: 'http://192.168.1.116:8080/characters',
+        dataType: 'json',
+        type: 'GET',  //get is technically default, but I'm throwing this in there anyway
+
+        success: function(result){
+            var charData = new Array();
+            charData = result;
+            $.each(charData, function(i, item) {
+                $('#char2mod').append('<option value="'+charData[i]._id+'">'+charData[i].name+'</option>');
+            });
+        } // success over        
+    });
+}
+
+
 function getCharData(sel){
     var id = sel.options[sel.selectedIndex].value; 
     if (id=='') {
@@ -40,12 +57,12 @@ function getCharData(sel){
     });
 }
 
-function putNewChar() {
+function addNewChar() {
     console.log("meow");
     theUrl = 'http://192.168.1.116:8080/addchar';
     theData = 'name=Bobbins';
     $.ajax({
-        url: theUrl,  //this will be different
+        url: theUrl,  
         type: 'POST',
         data: theData,
         success: function(result){
@@ -57,14 +74,127 @@ function putNewChar() {
             console.log(stuff);
         }
     });
-    console.log("meow meow");
 }
+
+function getAllModData() {
+    //code
+}
+
+function getModList() {
+    theUrl = 'http://192.168.1.116:8080/modifiers';
+    $.ajax({
+        url: theUrl,  
+        type: 'GET',
+        dataType: 'json',
+        success: function(result){
+            var modData = new Array();
+            modData = result;
+            $.each(modData, function(i, item) {
+                $('#mod2char').append('<option value="'+modData[i]._id+'">'+modData[i].stat+'</option>');
+            });
+        }
+    });
+}
+
+$(function() {
+    $('.error').hide();  
+    $("#char_gen_button").click(function() {  
+        $('.error').hide();  
+        var name = $("input#name").val();  
+        if (name == "") {  
+            $("label#name_error").show();  
+            $("input#name").focus();  
+            return false;  
+        } else {
+            console.log("name is not blank, continuing to ajax");
+            theData="name="+name;
+            $.ajax({
+                type: "POST",
+                url: 'http://192.168.1.116:8080/addchar',
+                data: theData,
+                success: function(){
+                    $('#char_creation').html("<div id='message'></div>");  
+                    $('#message').html("<h2>Character created!</h2>")  
+                    .append("<p>Now fill in the stats!</p><p>you might need to refresh the page to see it though</p>")  
+                    .hide()     
+                },
+                error: function() {
+                    alert("character creation request did not go through to the server!  Yell at Blake!");
+                }
+            });
+        }
+    });  
+});  
+
+//$(function() {
+$("#charaddmod").click(function() {
+    var modID = $("#mod2char").val();
+    var charID = $("#char2mod").val();
+    $.ajax({
+        url: 'http://192.168.1.116:8080/applymod',  
+        type: 'POST',
+        data: {modid: modID, charid: charID},
+        success: function(result){
+            alert("request successful!");
+        },
+        error: function(oh, noes, stuff){
+            alert("request failed!  Yell at Blake!");
+        }
+    });
+});
+    
+$(function() {
+    $('.error').hide();  
+    $("#mod_gen_button").click(function() {  
+        $('.error').hide();  
+        var name = $("input#modname").val();
+        var type = $("input#modtype").val();
+        var stack = $("input#modstack").is(':checked');
+        var value = $("input#modvalue").val();
+        var note = $("input#modnote").val();
+        theData = new Object()
+        
+        console.log(stack);
+        if (name == "") {  
+            $("label#modname_error").show();  
+            $("input#modname").focus();  
+            return false;  
+        }
+        if (value == "") {  
+            $("label#modvalue_error").show();  
+            $("input#modvalue").focus();  
+            return false;
+        }    
+        console.log("name is not blank, continuing to ajax");
+        theData="name="+name; //stat
+        
+        $.ajax({
+            type: "POST",
+            url: 'http://192.168.1.116:8080/addmod',
+            data: {
+                stat: name,
+                type: type,
+                stacking: stack,
+                value: value,
+                note: note
+            },
+            success: function(){
+                $('#char_creation').html("<div id='message'></div>");  
+                $('#message').html("<h2>Character created!</h2>")  
+                .append("<p>Now fill in the stats!</p><p>you might need to refresh the page to see it though</p>")  
+                .hide()     
+            },
+            error: function() {
+                alert("character creation request did not go through to the server!  Yell at Blake!");
+            }
+        });
+    });  
+});
 
 function quack() {
     console.log('quack');
 }
-/*
-$('#addGuy').bind('click', putNewChar());
-$('#otherAddGuy').bind('click', putNewChar());
-*/
+
 getAllChars();
+getCharList();
+getModList();
