@@ -51,11 +51,12 @@ calc_simple_stats: function(merged_mods){
         var sum = 0;
         var var_encountered = false;
         for(i in merged_mods[stat]){
-            if(merged_mods[stat][i].value){
+            if(typeof merged_mods[stat][i].value != number){
                 var_encountered = true;
                 break;
+            }else{
+                sum += merged_mods[stat][i].value;
             }
-            sum += merged_mods[stat][i].value;
         }
         if(!var_encountered){
             stats[stat] = sum;
