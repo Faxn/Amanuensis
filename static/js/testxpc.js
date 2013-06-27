@@ -30,7 +30,14 @@ var testmods = [
         {
             "stat":["strength"],
             "type":"racial",
-            "value":-2
+            "value":-2,
+            "stacking":true
+        },
+        {
+            "stat":["strength"],
+            "type":"racial",
+            "value":+4,
+            "stacking":true
         }
 ]
 
