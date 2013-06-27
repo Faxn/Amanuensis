@@ -35,6 +35,6 @@ var testmods = [
 ]
 
 var mods = xpc.merge_mods(testmods)
-console.log("####################\n"+mods)
-var stats = calc_simple_stats(mods)
-console.log("####################\n"+stats)
+console.log("####################\n",mods)
+var stats = xpc.calc_simple_stats(mods)
+console.log("####################\n",stats)

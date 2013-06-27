@@ -26,15 +26,17 @@ calc_stats: function(raw_mods){
  */ 
 merge_mods: function(raw_mods){
     merged_mods = {}
-    for(i  in mods){
-        for(stat in mods[i].stat){
+    for(i  in raw_mods){
+        for(stati in raw_mods[i].stat){
+            var stat = raw_mods[i].stat[stati]
             if(merged_mods[stat] == null){
-                merged_mods[stat] = [mods[i]]
+                merged_mods[stat] = [raw_mods[i]]
             } else {
-                merged_mods[stat].push(mods[i])
+                merged_mods[stat].push(raw_mods[i])
             }
         }
     }
+    return merged_mods
 },
 
 /**
@@ -59,11 +61,13 @@ calc_simple_stats: function(merged_mods){
             stats[stat] = sum;
         }
     }
+    
+    return stats
 },
 
 /**
  */
-calc_variable_stats: function(merged_mods, simple_stats){
+calc_variable_stats: function(merged_mods, stats){
 },
 
 getStat: function (xpc, stat){
