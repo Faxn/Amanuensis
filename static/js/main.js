@@ -126,20 +126,22 @@ $(function() {
     });  
 });  
 
-//$(function() {
-$("#charaddmod").click(function() {
-    var modID = $("#mod2char").val();
-    var charID = $("#char2mod").val();
-    $.ajax({
-        url: 'http://192.168.1.116:8080/applymod',  
-        type: 'POST',
-        data: {modid: modID, charid: charID},
-        success: function(result){
-            alert("request successful!");
-        },
-        error: function(oh, noes, stuff){
-            alert("request failed!  Yell at Blake!");
-        }
+$(function() {
+    $("#charaddmod").click(function() {
+        console.log("trying to add mod!");
+        var modID = $("#mod2char").val();
+        var charID = $("#char2mod").val();
+        $.ajax({
+            url: 'http://192.168.1.116:8080/applymod',  
+            type: 'POST',
+            data: {modid: modID, charid: charID},
+            success: function(result){
+                alert("request successful!");
+            },
+            error: function(oh, noes, stuff){
+                alert("request failed!  Yell at Blake!");
+            }
+        });
     });
 });
     

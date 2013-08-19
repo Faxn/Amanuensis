@@ -5,21 +5,24 @@ var http = require('http'),
     url = require('url'),
     mongo = require('mongodb'),
     $ = require('jquery'),
-    _ = require('underscore')
+    _ = require('underscore'),
+    config = require('./config')
     
 
 // configure the app
 var app = express();
 app.use(express.bodyParser());
+app.config = config
 
 // Connect to the database
-mongo.MongoClient.connect("mongodb://localhost:27017/test", function(err, ndb) {
+mongo.MongoClient.connect(config.db_url, function(err, ndb) {
   if(!err) {
-    console.log("We are connected");
     app.db = ndb;
     app.db_char=ndb.collection("Characters")
     app.db_mod=ndb.collection("Modifiers")
   } else {
+      console.log("Failed to connect to :"+config.db_url);
+      console.log("Make sure the database is up and the url in config.js is correct.");
       exit(1)
   }
 });
@@ -74,9 +77,9 @@ app.get('/characters', function (req, res){
 app.get('/modifiers', function (req, res){
     res.contentType('json');
     var names = [];
-    app.db_mod.find({}).toArray(function(err, chars){
-        for(i in chars){
-            names.push(chars[i]);
+    app.db_mod.find({}).toArray(function(err, mods){
+        for(i in mods){
+            names.push(mods[i]);
         };
         res.send(names);
     })
@@ -97,9 +100,10 @@ app.get('/charbyid', function(req, res){
         
         var ret = [];
         for(i in xpc.modifiers){
-            ret.push(app.db_mods.findOne({_id: xpc.modifiers[i]}, logErrorReturn))
+            ret.push(app.db_mod.findOne({_id: xpc.modifiers[i]}, logErrorReturn))
         }
         
+        xpc.mods = ret
         res.send(xpc);
     });
 });
@@ -115,25 +119,54 @@ app.post('/addmod', function (req, res){
     if(!req.body.stat instanceof Array){
         req.body.stat = [req.body.stat]
     }
+    if(req.body._id == null){
+        req.body._id = mongo.ObjectID()
+    }
     if(req.body.stacking != null){
        req.body.stacking = 
             ["true"].indexOf(req.body.stacking) >= 0
     }
     app.db_mod.save(req.body, logErrorReturn);
-    res.end();
+    res.send(req.body._id);
 });
 
 app.post('/applymod', function (req, res){
     var charid = mongo.ObjectID(req.body.charid)
     var modid  = mongo.ObjectID(req.body.modid)
+    console.log(req.body)
+    console.log("passed modid:"+req.body.modid+"; charid:"+req.body.charid);
     console.log("applying "+modid+" to "+charid);
-    app.dp_char.update({_id:charid},{$push:{modifiers:modid}})
+    app.db_char.update({_id:charid},{$push:{modifiers:modid}}, {w:1},function(err, result){
+        if(err == null){
+            console.log(result)
+            res.end()
+        }else{
+            res.send(err)
+            console.log(err)
+        }
+    })
     
+})
+
+app.post('/modsbycharid', function(req, res){
+    var charid = mongo.ObjectID(req.body.charid)
+    console.log("finding mods for "+charid);
+    var mods = []
+    app.db_char.findOne({_id:charid}, function(err, xpc){
+        for(i in xpc.mods){
+            var modid = mongo.ObjectID(xpc.mods[i])
+                app.db_mod.findOne({_id:modid}, function(err, mod){
+                mods.push(mod)
+            })
+        }
+    })
+    
+    res.send(mods);
 })
 
 
 //host the server
-app.set('port', 8080);
+app.set('port', config.server_port);
 var server = http.createServer(app);
 server.listen(app.get('port'), function (){});
-console.log('Server running at ????:8080');
+console.log('Server running at ????:'+config.server_port);

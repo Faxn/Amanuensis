@@ -26,7 +26,30 @@ define(function(require) {
 return {
 
 /**
- * Ffunction to turn a list of modifiers that apply to one 
+ * Function that takes a character and it's raw mods and returns 
+ * a coherent non-relatoional object.
+ * @param xpc
+ * @param raw_mods 
+ * @param parents
+ */
+process_char: function(xpc, raw_mods, parents){
+    parents = arguments.slice(2)
+    
+    //add all of the parent's mods to my mods.
+    for(i in parents){
+        for(j in parents[i]){
+            for(k in parents[i].mods){
+                raw_mods.push(parents[i][j].mods[k])
+            }
+        }
+    }
+    
+    
+}
+
+
+/**
+ * Function to turn a list of modifiers that apply to one 
  * character into an object in the form {stat:value} that contains the
  * final value of all stats.
  */
