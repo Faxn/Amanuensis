@@ -1,6 +1,6 @@
 function getAllChars(){
     $.ajax({
-        url: 'http://192.168.1.116:8080/characters',
+        url: '/characters',
         dataType: 'json',
         type: 'GET',  //get is technically default, but I'm throwing this in there anyway
 
@@ -17,7 +17,7 @@ function getAllChars(){
 
 function getCharList(){
     $.ajax({
-        url: 'http://192.168.1.116:8080/characters',
+        url: '/characters',
         dataType: 'json',
         type: 'GET',  //get is technically default, but I'm throwing this in there anyway
 
@@ -39,7 +39,7 @@ function getCharData(sel){
         return;
     }
     console.log("about to get char data");
-    theUrl = 'http://192.168.1.116:8080/charbyid?id='+id;
+    theUrl = '/charbyid?id='+id;
     $('#charstats').empty(); //toss out the previously rendered char stats
 
     $.ajax({
@@ -59,7 +59,7 @@ function getCharData(sel){
 
 function addNewChar() {
     console.log("meow");
-    theUrl = 'http://192.168.1.116:8080/addchar';
+    theUrl = '/addchar';
     theData = 'name=Bobbins';
     $.ajax({
         url: theUrl,  
@@ -81,7 +81,7 @@ function getAllModData() {
 }
 
 function getModList() {
-    theUrl = 'http://192.168.1.116:8080/modifiers';
+    theUrl = '/modifiers';
     $.ajax({
         url: theUrl,  
         type: 'GET',
@@ -110,7 +110,7 @@ $(function() {
             theData="name="+name;
             $.ajax({
                 type: "POST",
-                url: 'http://192.168.1.116:8080/addchar',
+                url: '/addchar',
                 data: theData,
                 success: function(){
                     $('#char_creation').html("<div id='message'></div>");  
@@ -132,7 +132,7 @@ $(function() {
         var modID = $("#mod2char").val();
         var charID = $("#char2mod").val();
         $.ajax({
-            url: 'http://192.168.1.116:8080/applymod',  
+            url: '/applymod',  
             type: 'POST',
             data: {modid: modID, charid: charID},
             success: function(result){
@@ -172,7 +172,7 @@ $(function() {
         
         $.ajax({
             type: "POST",
-            url: 'http://192.168.1.116:8080/addmod',
+            url: '/addmod',
             data: {
                 stat: name,
                 type: type,
