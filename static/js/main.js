@@ -47,12 +47,28 @@ function getCharData(sel){
         dataType: 'json',
         type: 'GET',  //get is technically default, but I'm throwing this in there anyway
 
-        success: function(result){
-            var charStats = new Array();
-            charStats = result;
-            $.each(charStats, function(i, item) {
-                $('#charstats').append(charStats[i]+'<>');
-            });
+        success: function(charStats){
+            $('#charstats').append("name:" + charStats['name']+"<br>"+
+                                    "Modifiers: <br>")
+            $.ajax({
+                url: '/modsbycharid?id='+id, 
+                dataType: 'json', 
+                sucess: function(mods){
+                    console.log(mods)
+                    $.each(mods, function(i, item){
+                        console.log(item)
+                        $('#charstats').append("&nbsp&nbsp&nbsp&nbsp&nbsp"+item+"<br>");
+                    })
+                    $('#charstats').append("<>")
+                },
+                error: function(oh, noes, stuff){
+                    console.log(oh);
+                    console.log(noes);
+                    console.log(stuff);
+                }
+            })
+                    
+            
         } // success over        
     });
 }

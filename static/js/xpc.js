@@ -30,7 +30,7 @@ return {
  * a coherent non-relatoional object.
  * @param xpc
  * @param raw_mods 
- * @param parents
+ * @param parents Completed XPCs of parent nodes. Can be empty.
  */
 process_char: function(xpc, raw_mods, parents){
     parents = arguments.slice(2)

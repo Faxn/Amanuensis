@@ -148,20 +148,26 @@ app.post('/applymod', function (req, res){
     
 })
 
-app.post('/modsbycharid', function(req, res){
-    var charid = mongo.ObjectID(req.body.charid)
-    console.log("finding mods for "+charid);
-    var mods = []
-    app.db_char.findOne({_id:charid}, function(err, xpc){
-        for(i in xpc.mods){
-            var modid = mongo.ObjectID(xpc.mods[i])
+app.get('/modsbycharid', function(req, res){
+    if(req.query.id == null) {
+        res.statusCode(400)
+        res.end("No id provided.")
+        return
+    }
+    console.log("getting mods for:" + req.query.id)
+    var id = mongo.ObjectID(req.query.id)
+    var mods = [];
+    res.contentType('json');
+    app.db_char.findOne({_id:id}, function(err, xpc){
+        for(i in xpc.modifiers){
+            var modid = xpc.modifiers[i]//mongo.ObjectID(xpc.modifiers[i])
                 app.db_mod.findOne({_id:modid}, function(err, mod){
-                mods.push(mod)
-            })
+                    res.write(mod)
+                })
         }
     })
-    
-    res.send(mods);
+    //console.log(mods);
+    //res.send(mods);
 })
 
 
