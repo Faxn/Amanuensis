@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Char Sheet with Backbone</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
+    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/backbone.js/1.0.0/backbone.js"></script>
+    <link type="text/css" rel="stylesheet" href="main.css"></link>
+</head>
+
+<body>
+
+    <div id ="info">
+        This is a digital character sheet for a whole party of d20 characters.
+    </div>
+
+    <div id="char_box">        
+    </div>
+    
+    <script type="text/template" id="char_template">
+        <%=name%>
+    </script>
+    
+    <script type="text/template" id="char_details_template">
+        <div>
+            <div><h5>character name  </h5> <%=name%> </div>
+            <div><h5>character id    </h5> <%=id%>   </div>
+            <div> mods 
+                <ul>
+                <% for(var i in mods) { %>
+                    <li> <%= mods[i] %> </li>
+                <% } %>
+                </ul>
+            </div>
+        </div>
+    </script>
+    
+    <script type="text/javascript" src="js/main_bb.js"></script>
+    
+</body>
+</html>
