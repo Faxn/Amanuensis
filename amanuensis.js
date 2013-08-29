@@ -39,6 +39,7 @@ function logErrorReturn(err, thing){
 
 //host static files.
 app.use(express.static(__dirname + '/static'));
+app.use(express.bodyParser());
 
 //database convience methods
 function addModifier(xpc, modifier){
@@ -63,6 +64,7 @@ app.get('/character_names', function (req, res){
     
 });
 
+//Get all Characters
 app.get('/characters', function (req, res){
     res.contentType('json');
     var names = [];
@@ -74,25 +76,15 @@ app.get('/characters', function (req, res){
     })
 });
 
-app.get('/modifiers', function (req, res){
-    res.contentType('json');
-    var names = [];
-    app.db_mod.find({}).toArray(function(err, mods){
-        for(i in mods){
-            names.push(mods[i]);
-        };
-        res.send(names);
-    })
-});
-
-app.get('/charbyid', function(req, res){
-    if(req.query.id == null) {
+//get specific character by id.
+app.get('/characters/:id', function(req, res){
+    if(req.params.id == null) {
         res.statusCode(400)
         res.end("No id provided.")
         return
     }
-    console.log("getting Character:" + req.query.id)
-    var id = mongo.ObjectID(req.query.id)
+    console.log("getting Character:" + req.params.id)
+    var id = mongo.ObjectID(req.params.id)
     
     res.contentType('json');
     app.db_char.findOne({_id:id}, function(err, xpc){
@@ -108,68 +100,45 @@ app.get('/charbyid', function(req, res){
     });
 });
 
-app.post('/addchar', function (req, res){
+// Add a single character to the character collection
+app.post('/characters', express.bodyParser(), function (req, res){
     console.log("adding Character: ", req.body);
+    //TODO: return the id of the created character or possibly anything but yes in case of error.
     app.db_char.save(req.body, logErrorReturn);
     res.end();
 });
 
-app.post('/addmod', function (req, res){
-    console.log("adding Modifier:", req.body);
-    if(!req.body.stat instanceof Array){
-        req.body.stat = [req.body.stat]
-    }
-    if(req.body._id == null){
-        req.body._id = mongo.ObjectID()
-    }
-    if(req.body.stacking != null){
-       req.body.stacking = 
-            ["true"].indexOf(req.body.stacking) >= 0
-    }
-    app.db_mod.save(req.body, logErrorReturn);
-    res.send(req.body._id);
-});
-
-app.post('/applymod', function (req, res){
-    var charid = mongo.ObjectID(req.body.charid)
-    var modid  = mongo.ObjectID(req.body.modid)
-    console.log(req.body)
-    console.log("passed modid:"+req.body.modid+"; charid:"+req.body.charid);
-    console.log("applying "+modid+" to "+charid);
-    app.db_char.update({_id:charid},{$push:{modifiers:modid}}, {w:1},function(err, result){
-        if(err == null){
-            console.log(result)
-            res.end()
-        }else{
-            res.send(err)
-            console.log(err)
-        }
-    })
-    
-})
-
-app.get('/modsbycharid', function(req, res){
-    if(req.query.id == null) {
-        res.statusCode(400)
-        res.end("No id provided.")
+// update a character.
+app.put('/characters/:id', express.bodyParser(), function (req, res){
+    req.body._id = req.params.id
+    console.log("Updating Character: ", req.body);
+    if(!req.body.name){
+        res.send(400, "Character provided incomplete. Needs at least a name")
         return
     }
-    console.log("getting mods for:" + req.query.id)
-    var id = mongo.ObjectID(req.query.id)
-    var mods = [];
-    res.contentType('json');
-    app.db_char.findOne({_id:id}, function(err, xpc){
-        for(i in xpc.modifiers){
-            var modid = xpc.modifiers[i]//mongo.ObjectID(xpc.modifiers[i])
-                app.db_mod.findOne({_id:modid}, function(err, mod){
-                    res.write(mod)
-                })
+    app.db_char.save(req.body, function(err, result){
+        if(err){
+            res.send(410, err)
+        }else{
+            res.send(200)
         }
-    })
-    //console.log(mods);
-    //res.send(mods);
-})
+        
+    });
+});
 
+// update a character.
+app.delete('/characters/:id', function (req, res){
+    console.log("adding Character: ", req.body);
+    app.db_char.remove({_id:req.params.id}, function(err, result){
+        if(err){
+            res.send(410, err)
+        }else{
+            res.send(200)
+        }
+        
+    });
+    
+});
 
 //host the server
 app.set('port', config.server_port);
