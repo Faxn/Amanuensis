@@ -8,42 +8,51 @@ Character = Backbone.Model.extend({
         _id: "-1"
     },
     initialize:function(){
-        new CharView( {model : this} );
+        
     }
 });
     
-CharList = Backbone.Collection.extend({
+Characters = Backbone.Collection.extend({
     url: '/characters',
     model: Character,
     initialize: function(){
         console.log('Collection made');
-        
+        this.grab()
     },
     grab: function(){
-        console.log(this.fetch());
+        //this.fetch()
+        //console.log("fetched: " + this);
     }
 });
 
-CharView =  Backbone.View.extend({
+CharList =  Backbone.View.extend({
     initialize: function() {
-        var id = 'char_li_'+this.model.attributes._id;
-        this.el = '#' + id
-        $("#char_box").append('<div id='+id+' class="a_char" ><\div>');
-        this.$el = $(this.el);
+        this.collection = new Characters();
+        this.collection.on("add", this.addCharacter, this)
+        this.collection.fetch()
+        this.$el = $(this.el)
         this.render();
-        //this.$el.bind("click", this.clickQuack)
-        this.delegateEvents()
     },
     render: function() {
-        var template = _.template($("#char_template").html(), this.model.attributes );
-        this.$el.html(template);
+        console.log(this.collection)
+        console.log(this.collection.length)
+        _.each(this.collection, function (char, index, collection){
+            console.log("rendering "+ char);
+            var template = _.template($("#char_template").html(), char.attributes );
+            this.$el.append(template);
+        });
+    },
+    addCharacter: function (char){
+        var template = _.template($("#char_template").html(), char.attributes );
+        this.$el.append(template);
     },
     events: {
-        "click" : "clickQuack"
+        "click .a_char" : "clickQuack"
     },
-    clickQuack:function(){
+    clickQuack:function(event){
+        var charDiv = event.currentTarget
         //app_router.navigate('sheet'+this.el);
-        window.location.hash="sheet/"+this.model.attributes._id
+        window.location.hash="sheet/"+charDiv.id
         //console.log('quack');
         //this.$el.css("background-color", '#' + (0x1000000+Math.random()*0xffffff).toString(16).substr(1,6))
     }
@@ -73,8 +82,7 @@ AppRouter = Backbone.Router.extend({
         "sheet/:charid"   : "sheet"
     },
     list: function (){
-        var aList = new CharList();
-        aList.grab(); //this can be moved into the CharList's init
+        var aList = new CharList({el:"#char_box"});
     },
     sheet: function(charid){
         $('#char_box').hide(); //hide the char list - should add something to toggle it back

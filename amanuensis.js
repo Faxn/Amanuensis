@@ -66,13 +66,10 @@ app.get('/character_names', function (req, res){
 
 //Get all Characters
 app.get('/characters', function (req, res){
-    res.contentType('json');
     var names = [];
-    app.db_char.find({}).toArray(function(err, chars){
-        for(i in chars){
-            names.push(chars[i]);
-        };
-        res.send(names);
+    app.db_char.find().toArray(function(err, chars) {
+        res.contentType('json');
+        res.send(chars)        
     })
 });
 
