@@ -80,19 +80,11 @@ app.get('/characters/:id', function(req, res){
         res.end("No id provided.")
         return
     }
-    console.log("getting Character:" + req.params.id)
     var id = mongo.ObjectID(req.params.id)
     
     res.contentType('json');
     app.db_char.findOne({_id:id}, function(err, xpc){
         //TODO: handle err
-        
-        var ret = [];
-        for(i in xpc.modifiers){
-            ret.push(app.db_mod.findOne({_id: xpc.modifiers[i]}, logErrorReturn))
-        }
-        
-        xpc.mods = ret
         res.send(xpc);
     });
 });
@@ -107,7 +99,7 @@ app.post('/characters', express.bodyParser(), function (req, res){
 
 // update a character.
 app.put('/characters/:id', express.bodyParser(), function (req, res){
-    req.body._id = req.params.id
+    req.body._id = mongo.ObjectID(req.params.id)
     console.log("Updating Character: ", req.body);
     if(!req.body.name){
         res.send(400, "Character provided incomplete. Needs at least a name")
@@ -125,7 +117,6 @@ app.put('/characters/:id', express.bodyParser(), function (req, res){
 
 // update a character.
 app.delete('/characters/:id', function (req, res){
-    console.log("adding Character: ", req.body);
     app.db_char.remove({_id:req.params.id}, function(err, result){
         if(err){
             res.send(410, err)

@@ -1,29 +1,7 @@
-
-
-
-Character = Backbone.Model.extend({
-    defaults:{
-        name:"Error McFileNotFound",
-        modifiers:{},
-        _id: "-1"
-    },
-    initialize:function(){
-        
-    }
-});
+require([ 'js/models/character', 'js/collections/characters'], function(Character, Characters){
     
-Characters = Backbone.Collection.extend({
-    url: '/characters',
-    model: Character,
-    initialize: function(){
-        console.log('Collection made');
-        this.grab()
-    },
-    grab: function(){
-        //this.fetch()
-        //console.log("fetched: " + this);
-    }
-});
+
+    
 
 CharList =  Backbone.View.extend({
     initialize: function() {
@@ -31,25 +9,16 @@ CharList =  Backbone.View.extend({
         this.collection.on("add", this.addCharacter, this)
         this.collection.fetch()
         this.$el = $(this.el)
-        this.render();
-    },
-    render: function() {
-        console.log(this.collection)
-        console.log(this.collection.length)
-        _.each(this.collection, function (char, index, collection){
-            console.log("rendering "+ char);
-            var template = _.template($("#char_template").html(), char.attributes );
-            this.$el.append(template);
-        });
     },
     addCharacter: function (char){
-        var template = _.template($("#char_template").html(), char.attributes );
+        var template = _.template($("#char_template").html(), char);
         this.$el.append(template);
     },
     events: {
-        "click .a_char" : "clickQuack"
+        "click .a_char" : "clickChar"
+        
     },
-    clickQuack:function(event){
+    clickChar:function(event){
         var charDiv = event.currentTarget
         //app_router.navigate('sheet'+this.el);
         window.location.hash="sheet/"+charDiv.id
@@ -62,15 +31,25 @@ DetailedView = Backbone.View.extend({
     //template : _.template($("#details").html()),
 
     initialize: function() {
-        this.listenTo(this.model, 'change', this.render);
-        this.listenTo(this.model, 'destroy', this.remove);
+        this.listenTo(this.model, 'change', this.render, this);
+        this.listenTo(this.model, 'destroy', this.remove, this);
+        this.$el=$(this.el)
         this.render();
     },
     render: function(){
-        //this.$el.html(template, this.model.toJSON());
+        this.model.fetch()
+        var template = _.template($("#char_sheet_template").html(), this.model );
+        this.$el.html(template);
     },
     events: {
-        "keypress .edit"  : "updateOnEnter"
+        "keypress .edit"  : "updateOnEnter",
+        "click #manual_mod_submit" : 'manualMod'
+    },
+    manualMod: function(event){
+        this.model.set($('#mm_mod').val(), $('#mm_value').val())
+        console.log(this.model)
+        this.model.save()
+        this.render()
     }
     
 });
@@ -79,22 +58,30 @@ AppRouter = Backbone.Router.extend({
     routes: {
         ""          :"list",
         "list"      :"list",
-        "sheet/:charid"   : "sheet"
+        "sheet/:charid"   : "sheet",
+        "raw/:charid"   : "raw"
     },
     list: function (){
-        var aList = new CharList({el:"#char_box"});
     },
     sheet: function(charid){
-        $('#char_box').hide(); //hide the char list - should add something to toggle it back
-        details = new DetailedView( new Character({id:charid}) ); //charid may or may not be kosher
-        console.log(charid);
+        details = new DetailedView({model:new Character({id:charid}), el:"#char_sheet"}); //charid may or may not be kosher
+    },
+    raw: function (charid) {
+        var char = (new Character({id:charid}))
+        char.fetch({success: function(){
+            $("#char_sheet").html( JSON.stringify(char) )
+            console.log(char)
+        }})
+        
     }
 })
 
 
 
 $(document).ready(function() {
-    
+    if(!this.aList){
+            this.aList = new CharList({el:"#char_box"});
+    }
         
     //initialize router
     var app_router = new AppRouter;
@@ -102,4 +89,9 @@ $(document).ready(function() {
         console.log(actions);
     })
     Backbone.history.start();
+    
+    
 });
+
+
+})

@@ -2,39 +2,139 @@
 <html>
 <head>
     <title>Char Sheet with Backbone</title>
+    
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.8/require.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
     <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/backbone.js/1.0.0/backbone.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
     <link type="text/css" rel="stylesheet" href="main.css"></link>
 </head>
 
 <body>
 
     <div id ="info">
-        This is a digital character sheet for a whole party of d20 characters.
+        <p>This is a digital character sheet for a whole party of d20 characters.</p>
+        
+        <div id='fav_chars'>
+            
+        </div>    
+        
+        <div id="char_box"> 
+        </div>
+        
     </div>
 
-    <div id="char_box">        
+    
+    
+    <div id="char_sheet">        
     </div>
     
     <script type="text/template" id="char_template">
-        <div id=<%=_id%> class="a_char" >
-            <%=name%>
+        <div class="box">
+            <div id=<%=attributes._id%> class="a_char" ><%=attributes.name%></div>
+            <div class='favbutton'>(!)</div>
         </div>
+        
     </script>
     
     <script type="text/template" id="char_details_template">
         <div>
-            <div><h5>character name  </h5> <%=name%> </div>
-            <div><h5>character id    </h5> <%=id%>   </div>
+            <div><em>character name  </em> <%=attributes.name%> </div>
+            <div><em>character id    </em> <%=attributes.id%>   </div>
             <div> mods 
                 <ul>
-                <% for(var i in mods) { %>
-                    <li> <%= mods[i] %> </li>
-                <% } %>
+
                 </ul>
             </div>
         </div>
+    </script>
+    
+    <script type="text/template" id="char_sheet_template">
+        <div class='s_meta'>
+            <div class='s_meta_component'>
+                player
+            </div>
+            <div class='s_meta_component'>
+                char: <%=attributes.name%>
+            </div>
+            <div class='s_meta_component'>
+                race
+            </div>
+            <div class='s_meta_component'>
+                class/lvl
+            </div>
+            <div class='s_meta_component'>
+                campaign
+            </div>
+            <br>
+        </div>
+        
+        <div class='s_details'>
+            <form id='manual_mod'>
+                <br>
+                <label for=mm_mod>Modifier</label><input id=mm_mod type=text value='mod'>
+                <label for=mm_value>Value</label><input id=mm_value type=text value='mod'>
+                <button id=manual_mod_submit>Submit</button>
+            </form>
+            
+            <table class='s_abilities'>
+                <% var abilities = ['Str', 'Dex', 'Con', 'Int', 'Wis', 'Cha'] 
+                var bonuses = []
+                $.each(abilities, function (idx, abi){
+                    if(! has(abi)) return;
+                    if(typeof get(abi) == 'object') $.each(get(abi), function ( mod){
+                        if(bonuses.indexOf(mod) == -1  ) bonuses.push(mod)
+                    })
+                })
+                %>
+                <tr>
+                    <th>Ability</th>
+                    <th>Total</th>
+                    <th>Mod</th>
+                    <% $.each(bonuses, function(i,v){%>
+                    <th><%=v%></th>
+                    <%})%>
+                </tr>
+                <%$.each(abilities, function(idx, ability){ 
+                    var tot = getValue(ability)
+                    var abi = get(ability)
+                    var mod = Math.floor((tot-10)/2)
+                    %>
+                    <tr><th><%=ability%></th><td><%=tot%></td><td><%=mod%></td>
+                    <% $.each(bonuses, function(i,v){%>
+                        <td><%= typeof abi == 'object' ? abi[v]: ' ' %></td>
+                    <%})%>
+                    </tr>
+                <%});%>
+                
+            </table>
+            init
+            Senses
+        </div>
+        <div class = 's_defense'>
+            <h2>DEFENSE</h2>
+            <p> AC </p>
+            <p> HP </p>
+            
+        </div>
+        <div class ='s_offense'>
+            <h2>OFFENSE</h2>
+            <div class='s_bold_box'> <div class='s_bold_box_title'>BAB</div> __ </div>
+            <div class='s_bold_box'> <div class='s_bold_box_title'>CMB</div> __ </div>
+            <div class='s_bold_box'> <div class='s_bold_box_title'>SPEED</div> __ </div>
+            <h3>ATTACKS</h3>
+            <div class='s_attack_block'>
+                <div class='s_attack_chunk'></div>
+            </div>
+        </div>
+        <div class = 's_stastics'>
+            <div class = 's_skills'>
+                Acrobatics _ranks_ _ability_ 
+            </div>
+            
+        </div>
+    
     </script>
     
     <script type="text/javascript" src="js/main.js"></script>

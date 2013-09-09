@@ -10,28 +10,64 @@ body{
 }
 
 #info {
-	width:28%;
+	width:15%;
 	float:left;
 	background: gray;
-	
-	min-height: 100%; /* real browsers */
-	height: auto !important; /* real browsers */
-	height: 100%; /* IE6: treated as min-height*/
+	padding: .5%;
+	min-height: 100%; 
+	height: auto !important; 
+	height: 100%; 
 }
+
+#char_sheet {
+
+	width:60%;
+	float:left;
+	background-color:blue;
+	padding: .5%;
+}
+
 #char_box {
+	background-color: gray;
 	float: left;
-	//margin-left:2%;
-	width:72%;
 	height:100%;
 	overflow-y:auto;
 }
-.a_char {
+.box {
 	float: left;
-	width: auto;
-	border: 2px solid black;
+	width: 85%;
 	margin-top: 1em;
-	margin-left: 1em;
-	//margin-right: 1em;
+	padding: 2%;
 	
-	background-color: green;
+	background-color: white;
+}
+.a_char {
+	background-color:purple;
+	float:left;
+	width:85%;
+}
+
+.favbutton {
+	background-color:green;
+	text-align: center;
+	float:right;
+	width:auto;
+}
+
+.s_meta{
+	width: auto;
+	float:none;
+}
+
+.s_meta_component{
+	width: 15%;
+	padding: 1%;
+	float: left;
+	border: solid black 2px;
+	background-color: orange;
+}
+
+.s_abilities {
+	clear:both;
+	border: solid black 2px;
 }
