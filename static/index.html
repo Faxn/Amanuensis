@@ -33,7 +33,7 @@
     <script type="text/template" id="char_template">
         <div class="box">
             <div id=<%=attributes._id%> class="a_char" ><%=attributes.name%></div>
-            <div class='favbutton'>(!)</div>
+            <div class='favbutton'>✩</div>
         </div>
         
     </script>
@@ -80,13 +80,7 @@
             
             <table class='s_abilities'>
                 <% var abilities = ['Str', 'Dex', 'Con', 'Int', 'Wis', 'Cha'] 
-                var bonuses = []
-                $.each(abilities, function (idx, abi){
-                    if(! has(abi)) return;
-                    if(typeof get(abi) == 'object') $.each(get(abi), function ( mod){
-                        if(bonuses.indexOf(mod) == -1  ) bonuses.push(mod)
-                    })
-                })
+                var bonuses = getModifiers(abilities)
                 %>
                 <tr>
                     <th>Ability</th>
