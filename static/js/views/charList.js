@@ -12,7 +12,6 @@ define(['js/collections/characters'], function(Characters){
         },
         events: {
             "click .a_char" : "clickChar"
-            
         },
         clickChar:function(event){
             var charDiv = event.currentTarget

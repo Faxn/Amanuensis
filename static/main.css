@@ -71,3 +71,7 @@ body{
 	clear:both;
 	border: solid black 2px;
 }
+
+.mod_field {
+    background-color: white
+}

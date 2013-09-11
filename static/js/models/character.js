@@ -26,14 +26,23 @@ define([], function(){
                 return sum
             }
         },
-        setModifier: function(attribute, mod, value){
-            if(!this.has(attribute)){
-                this.set(attribute, {}) 
-            }
-            var atr = this.get(attribute)
-            atr[mod]=value
+        setBonus: function(attribute, bonus, value){
+            if(typeof this.get(attribute) != 'object'){
+                this.set(attribute, {} ) 
+            } 
+            var bonuses = this.get(attribute)
+            bonuses[bonus]=value 
+            /* ugly workaround. As of backbone 1.0.0 set won't 
+            detect a change to an object because it's passed as a 
+            reference, and the reference hasn't changed. So we are 
+            going to remove it, but supress the change event, then 
+            adding it will fire a change event.
+             */
+            this.unset(attribute, ['silent'])   
+            this.set(attribute, bonuses)
+            this.save()
         },
-        getModifiers: function(attributes){
+        getBonuses: function(attributes){
             if(typeof attributes != 'object'){
                 attributes = [attributes]
             }
@@ -41,9 +50,9 @@ define([], function(){
             attributes.map(function(e,i,o){
                 var attr = this.get(e)
                 if(typeof attr == 'object'){
-                    attr.map(function(e,i,o){
-                        bonuses[i]=i    //using hash as a map.
-                    }, this)
+                    $.map(attr,function(val, bon){
+                        bonuses[bon]=bon    //using hash as a set.
+                    })
                 }
             }, this)
             return bonuses
