@@ -1,11 +1,11 @@
+requirejs.config({
+    paths:{
+        text:"http://cdnjs.cloudflare.com/ajax/libs/require-text/2.0.10/text"
+    }
+})
+
 require([ 'js/models/character', 'js/views/charList', 'js/views/sheetView'], function(Character, CharList, DetailedView){
     
-
-    
-
-
-
-
 
 AppRouter = Backbone.Router.extend({
     routes: {

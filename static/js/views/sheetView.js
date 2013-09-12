@@ -1,4 +1,4 @@
-define([], function(){
+define(['text!templates/charSheet.html'], function(char_sheet_template){
     DetailedView = Backbone.View.extend({
         //template : _.template($("#details").html()),
 
@@ -10,7 +10,7 @@ define([], function(){
         },
         render: function(){
             this.model.fetch()
-            var template = _.template($("#char_sheet_template").html(), this.model );
+            var template = _.template(char_sheet_template, this.model );
             this.$el.html(template);
         },
         events: {

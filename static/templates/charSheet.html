@@ -1,0 +1,77 @@
+<div class='s_meta'>
+    <div class='s_meta_component'>
+        player
+    </div>
+    <div class='s_meta_component'>
+        char: <%=attributes.name%>
+    </div>
+    <div class='s_meta_component'>
+        race
+    </div>
+    <div class='s_meta_component'>
+        class/lvl
+    </div>
+    <div class='s_meta_component'>
+        campaign
+    </div>
+    <br>
+</div>
+        
+<div class='s_details'>
+    <form id='manual_mod'>
+        <br>
+        <label for=mm_mod>Modifier</label><input id=mm_mod type=text value='mod'>
+        <button id=manual_mod_submit>Submit</button>
+    </form>
+    
+    <table class='s_abilities'>
+        <% var abilities = ['Str', 'Dex', 'Con', 'Int', 'Wis', 'Cha'] 
+        var bonuses = getBonuses(abilities)
+        %>
+        <tr>
+            <th>Ability</th>
+            <th>Total</th>
+            <th>Mod</th>
+            <% $.each(bonuses, function(i,v){%>
+            <th><%=v%></th>
+            <%})%>
+        </tr>
+        <%$.each(abilities, function(idx, ability){ 
+            var tot = getValue(ability)
+            var abi = get(ability)
+            var mod = Math.floor((tot-10)/2)
+            %>
+            <tr><th><%=ability%></th><td><%=tot%></td><td><%=mod%></td>
+            <% $.each(bonuses, function(i,v){%>
+                <td class='mod_field' data-bonus='<%=v%>' data-attribute='<%=ability%>'>
+                    <%= typeof abi == 'object' ? abi[v]: ' ' %></td>
+            <%})%>
+            </tr>
+        <%});%>
+        
+    </table>
+    init
+    Senses
+</div>
+<div class = 's_defense'>
+    <h2>DEFENSE</h2>
+    <p> AC </p>
+    <p> HP </p>
+    
+</div>
+<div class ='s_offense'>
+    <h2>OFFENSE</h2>
+    <div class='s_bold_box'> <div class='s_bold_box_title'>BAB</div> __ </div>
+    <div class='s_bold_box'> <div class='s_bold_box_title'>CMB</div> __ </div>
+    <div class='s_bold_box'> <div class='s_bold_box_title'>SPEED</div> __ </div>
+    <h3>ATTACKS</h3>
+    <div class='s_attack_block'>
+        <div class='s_attack_chunk'></div>
+    </div>
+</div>
+<div class = 's_stastics'>
+    <div class = 's_skills'>
+        Acrobatics _ranks_ _ability_ 
+    </div>
+    
+</div>

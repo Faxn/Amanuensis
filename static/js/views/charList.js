@@ -1,4 +1,4 @@
-define(['js/collections/characters'], function(Characters){
+define(['js/collections/characters', 'text!templates/charListItem.html'], function(Characters, char_list_item_template){
     CharList =  Backbone.View.extend({
         initialize: function() {
             this.collection = new Characters();
@@ -7,7 +7,7 @@ define(['js/collections/characters'], function(Characters){
             this.$el = $(this.el)
         },
         addCharacter: function (char){
-            var template = _.template($("#char_template").html(), char);
+            var template = _.template(char_list_item_template, char);
             this.$el.append(template);
         },
         events: {
