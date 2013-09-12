@@ -1,4 +1,4 @@
-define(['text!templates/charSheet.html'], function(char_sheet_template){
+define(['text!templates/charSheet.html', 'js/views/attributeTableView'], function(char_sheet_template, attributeTableView){
     DetailedView = Backbone.View.extend({
         //template : _.template($("#details").html()),
 
@@ -12,35 +12,19 @@ define(['text!templates/charSheet.html'], function(char_sheet_template){
             this.model.fetch()
             var template = _.template(char_sheet_template, this.model );
             this.$el.html(template);
+            new attributeTableView({ el:"#abilities_table", model:this.model})
         },
         events: {
             "keypress .edit"  : "updateOnEnter",
-            "click #manual_mod_submit" : 'manualMod',
-            "dblclick .mod_field": 'editMod',
-            "blur .mod_field": 'saveMod'
+            "click #manual_mod_submit" : 'manualMod'
         },
         manualMod: function(event){
             var modname = $('#mm_mod').val()
             this.model.setBonus('Str', modname, 0)
             this.model.save()
             this.render()
-        },
-        editMod: function(event) {
-            var field = event.currentTarget
-            $(field).attr('contenteditable', true)
-            // TODO: This is Obselete in HTML5 according to 
-            // https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement#focus%28%29
-            // but the modern method is a mystery.
-            $(field).focus()
-        },
-        saveMod: function(event){
-            var field = $(event.currentTarget)
-            field.attr('contenteditable', false)
-            var attribute = field.attr('data-attribute')
-            var bonus = field.attr('data-bonus')
-            var value = Number(field.text())
-            this.model.setBonus(attribute, bonus, value)
         }
+        
     });
     return DetailedView
 })

@@ -24,32 +24,7 @@
         <button id=manual_mod_submit>Submit</button>
     </form>
     
-    <table class='s_abilities'>
-        <% var abilities = ['Str', 'Dex', 'Con', 'Int', 'Wis', 'Cha'] 
-        var bonuses = getBonuses(abilities)
-        %>
-        <tr>
-            <th>Ability</th>
-            <th>Total</th>
-            <th>Mod</th>
-            <% $.each(bonuses, function(i,v){%>
-            <th><%=v%></th>
-            <%})%>
-        </tr>
-        <%$.each(abilities, function(idx, ability){ 
-            var tot = getValue(ability)
-            var abi = get(ability)
-            var mod = Math.floor((tot-10)/2)
-            %>
-            <tr><th><%=ability%></th><td><%=tot%></td><td><%=mod%></td>
-            <% $.each(bonuses, function(i,v){%>
-                <td class='mod_field' data-bonus='<%=v%>' data-attribute='<%=ability%>'>
-                    <%= typeof abi == 'object' ? abi[v]: ' ' %></td>
-            <%})%>
-            </tr>
-        <%});%>
-        
-    </table>
+    <table id="abilities_table" class='s_abilities'></table>
     init
     Senses
 </div>
