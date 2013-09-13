@@ -46,12 +46,14 @@ define([], function(){
             if(typeof attributes != 'object'){
                 attributes = [attributes]
             }
-            var bonuses = {}
-            attributes.map(function(e,i,o){
+            var bonuses = []
+            _.each(attributes, function(e,i,o){
                 var attr = this.get(e)
                 if(typeof attr == 'object'){
-                    $.map(attr,function(val, bon){
-                        bonuses[bon]=bon    //using hash as a set.
+                    _.each(attr,function(val, bon){
+                        if(bonuses.indexOf(bon) == -1){
+                            bonuses.push(bon)
+                        }
                     })
                 }
             }, this)
