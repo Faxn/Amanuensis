@@ -43,13 +43,13 @@ define([], function(){
             this.save()
         },
         getBonuses: function(attributes){
-            if(typeof attributes != 'object'){
-                attributes = [attributes]
+            if(! attributes instanceof Array){
+                throw "Attributes must be an array."
             }
             var bonuses = []
             _.each(attributes, function(e,i,o){
-                var attr = this.get(e)
-                if(typeof attr == 'object'){
+                var attr = this.attributes[e]
+                if(attr instanceof Object){
                     _.each(attr,function(val, bon){
                         if(bonuses.indexOf(bon) == -1){
                             bonuses.push(bon)

@@ -3,16 +3,25 @@ define(['text!templates/charSheet.html', 'js/views/attributeTableView'], functio
         //template : _.template($("#details").html()),
 
         initialize: function() {
-            this.listenTo(this.model, 'change', this.render, this);
+            //this.listenTo(this.model, 'change', this.render, this);
             this.listenTo(this.model, 'destroy', this.remove, this);
             this.$el=$(this.el)
-            this.render();
+            
+            var template = _.template(char_sheet_template, this.model );
+            this.$el.html(template);
+            
+            this.views = this.views || {}
+            this.views['#abilities_table'] = new attributeTableView({ 
+                el:"#abilities_table", 
+                model:this.model
+            })
+            this.model.fetch()
         },
         render: function(){
             this.model.fetch()
-            var template = _.template(char_sheet_template, this.model );
-            this.$el.html(template);
-            new attributeTableView({ el:"#abilities_table", model:this.model})
+            _.each(this.views, function(v,i){
+                v.render();
+            })
         },
         events: {
             "keypress .edit"  : "updateOnEnter",

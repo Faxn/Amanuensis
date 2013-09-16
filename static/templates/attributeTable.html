@@ -1,0 +1,27 @@
+
+
+
+<tr>
+    <% _.each(totals, function(v, i){%>
+        <th><%=v.name%></th>
+    <%})%>
+    <% _.each(bonuses, function(v,i){%>
+        <th><%=v%></th>
+    <%})%>
+</tr>
+<%_.each(attrs, function( attr){ 
+    var tot = model.getValue(attr)
+    var abi = model.get(attr)
+    var mod = Math.floor((tot-10)/2)
+    %>
+    <tr>
+    <% _.each(totals, function(v, i){%>
+        <td ><%= v.formula.call(this, attr) %></td>
+    <%})%>
+    <% _.each(bonuses, function(v, i){%>
+        <td class='mod_field' data-bonus='<%=v%>' data-attribute='<%=attr%>'>
+            <%= typeof abi == 'object' ? abi[v]: ' ' %></td>
+    <%})%>
+    </tr>
+<%});%>
+

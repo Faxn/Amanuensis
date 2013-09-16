@@ -23,7 +23,7 @@ body{
 
 	width:60%;
 	float:left;
-	background-color:blue;
+	background-color:cyan;
 	padding: .5%;
 }
 
@@ -42,7 +42,7 @@ body{
 	background-color: white;
 }
 .a_char {
-	background-color:purple;
+	background-color:magenta;
 	float:left;
 	width:85%;
 }
