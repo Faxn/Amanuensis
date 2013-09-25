@@ -1,6 +1,6 @@
 define([], function(){
     var SEP = '_' // Seperator for inside DOM ids.
-    var Character = Backbone.Model.extend({
+    var Character = Backbone.NestedModel.extend({
         urlRoot: '/characters',
         defaults:{
             name:"Error McFileNotFound",
@@ -42,11 +42,11 @@ define([], function(){
             this.set(attribute, bonuses)
             this.save()
         },
-        getBonuses: function(attributes){
+        getBonuses: function(attributes, bonuses){
             if(! attributes instanceof Array){
                 throw "Attributes must be an array."
             }
-            var bonuses = []
+            var bonuses = bonuses || []
             _.each(attributes, function(e,i,o){
                 var attr = this.attributes[e]
                 if(attr instanceof Object){
@@ -73,6 +73,10 @@ define([], function(){
             var ret =  this.get(domId[1])
             if(domId[2]) ret=dret[domId[2]]
             return ret
+        },
+        getMod: function(attribute){
+            console.log(attribute)
+            return Math.floor(this.getValue(attribute) / 2 - 5)
         }
         
     });

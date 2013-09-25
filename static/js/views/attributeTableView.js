@@ -1,20 +1,24 @@
 define(['text!templates/attributeTable.html'], function(attribute_table_template_text){
     var attribute_table_template = _.template(attribute_table_template_text)
     
+    /**
+     * @field {Array[String]} attrs - list of attributes that make up the rows of the table.
+     * @field {Array[{name:<String>, formula:<function(String)>}]} totals - colums defined by a hard coded formula. the Function in formula is called on the model.
+     */
     return Backbone.View.extend({
+        constructor: function (param_obj){
+            console.log(param_obj)
+            this.attrs = param_obj.attrs || param_obj.attributes || []
+            this.totals = param_obj.totals || []
+            this.bonuses = param_obj.bonuses || []
+            Backbone.View.apply(this, arguments)
+        },
         initialize: function (){
             var model= this.model
             this.listenTo(this.model, 'change', this.render, this);
-            this.attrs = ['Str', 'Dex', 'Con', 'Int', 'Wis', 'Cha']
-            this.totals = [{name:'Ability', formula: function(attr) {return attr}},
-                           {name:'Total', formula: function(attr){return model.getValue(attr)}},
-                           {name:'Mod', formula:function(attr){return Math.floor(model.getValue(attr)/2-5) }}]
-            
-            
-            
         },
         render: function(){
-            this.bonuses = this.model.getBonuses(this.attrs)
+            this.bonuses = this.model.getBonuses(this.attrs, this.bonuses)
             this.$el.html(attribute_table_template(this))
         },
         events:{

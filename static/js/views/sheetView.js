@@ -3,6 +3,7 @@ define(['text!templates/charSheet.html', 'js/views/attributeTableView'], functio
         //template : _.template($("#details").html()),
 
         initialize: function() {
+            this.model.fetch()
             //this.listenTo(this.model, 'change', this.render, this);
             this.listenTo(this.model, 'destroy', this.remove, this);
             this.$el=$(this.el)
@@ -10,12 +11,28 @@ define(['text!templates/charSheet.html', 'js/views/attributeTableView'], functio
             var template = _.template(char_sheet_template, this.model );
             this.$el.html(template);
             
+            //set up views
+            var model = this.model;
             this.views = this.views || {}
+            //Abilities table
             this.views['#abilities_table'] = new attributeTableView({ 
                 el:"#abilities_table", 
-                model:this.model
+                model:this.model,
+                attrs: ['Str', 'Dex', 'Con', 'Int', 'Wis', 'Cha'],
+                totals: [{name:'Ability', formula: function(attr) {return attr}},
+                         {name:'Total', formula: model.getValue },
+                         {name:'Mod', formula: model.getMod }],
+                bonuses : ['base', 'racial']
             })
-            this.model.fetch()
+            this.views['#skills_table'] = new attributeTableView({
+                el:'#skills_table',
+                model:this.model,
+                attrs: _.map(['Acrobatics', 'Survival', 'Sneak', 'Perception'], function(str){return "skills."+str}),
+                totals: [{name: "Skill", formula: function(attr) {return attr.split('.')[1]}}],
+                bonuses: ['Class Skill', 'Ranks']
+            })
+            
+            
         },
         render: function(){
             this.model.fetch()

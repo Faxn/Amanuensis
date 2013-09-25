@@ -16,7 +16,7 @@
     %>
     <tr>
     <% _.each(totals, function(v, i){%>
-        <td ><%= v.formula.call(this, attr) %></td>
+        <td ><%= v.formula.call(model, attr) %></td>
     <%})%>
     <% _.each(bonuses, function(v, i){%>
         <td class='mod_field' data-bonus='<%=v%>' data-attribute='<%=attr%>'>
