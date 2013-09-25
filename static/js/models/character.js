@@ -30,16 +30,7 @@ define([], function(){
             if(typeof this.get(attribute) != 'object'){
                 this.set(attribute, {} ) 
             } 
-            var bonuses = this.get(attribute)
-            bonuses[bonus]=value 
-            /* ugly workaround. As of backbone 1.0.0 set won't 
-            detect a change to an object because it's passed as a 
-            reference, and the reference hasn't changed. So we are 
-            going to remove it, but supress the change event, then 
-            adding it will fire a change event.
-             */
-            this.unset(attribute, ['silent'])   
-            this.set(attribute, bonuses)
+            this.set(attribute+'.'+bonus, value)
             this.save()
         },
         getBonuses: function(attributes, bonuses){
@@ -75,7 +66,6 @@ define([], function(){
             return ret
         },
         getMod: function(attribute){
-            console.log(attribute)
             return Math.floor(this.getValue(attribute) / 2 - 5)
         }
         

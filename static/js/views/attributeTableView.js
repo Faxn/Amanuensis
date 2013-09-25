@@ -7,7 +7,6 @@ define(['text!templates/attributeTable.html'], function(attribute_table_template
      */
     return Backbone.View.extend({
         constructor: function (param_obj){
-            console.log(param_obj)
             this.attrs = param_obj.attrs || param_obj.attributes || []
             this.totals = param_obj.totals || []
             this.bonuses = param_obj.bonuses || []
@@ -38,7 +37,7 @@ define(['text!templates/attributeTable.html'], function(attribute_table_template
             field.attr('contenteditable', false)
             var attribute = field.attr('data-attribute')
             var bonus = field.attr('data-bonus')
-            var value = Number(field.text())
+            var value = isNaN(field.text()) ? field.text() :Number(field.text())
             this.model.setBonus(attribute, bonus, value)
         } 
     })
