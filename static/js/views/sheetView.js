@@ -1,4 +1,5 @@
-define(['text!templates/charSheet.html', 'js/views/attributeTableView', 'js/pathfinder'], function(char_sheet_template, attributeTableView, pathfinder){
+define(['text!templates/charSheet.html', 'js/views/attributeTableView', 'js/pathfinder', 'rivets'], 
+function(char_sheet_template, attributeTableView, pathfinder, rivets){
     DetailedView = Backbone.View.extend({
         //template : _.template($("#details").html()),
         
@@ -58,6 +59,8 @@ define(['text!templates/charSheet.html', 'js/views/attributeTableView', 'js/path
                 bonuses: ['Class Skill', 'Ranks']
             })
             
+            // call in rivets to do the binding.
+            this.binder = rivets.bind(this.$el, {char: model})
             
         },
         render: function(){

@@ -1,11 +1,33 @@
 requirejs.config({
     paths:{
-        text:"http://cdnjs.cloudflare.com/ajax/libs/require-text/2.0.10/text"
+        text:"http://cdnjs.cloudflare.com/ajax/libs/require-text/2.0.10/text",
+        rivets:"lib/rivets"
     }
 })
 
-require([ 'js/models/character', 'js/views/charList', 'js/views/sheetView'], function(Character, CharList, DetailedView){
-    
+require(['rivets'], function(rivets){
+    rivets.configure({
+    adapter: {
+        subscribe: function(obj, keypath, callback) {
+            obj.on('change:' + keypath, callback)
+        },
+        unsubscribe: function(obj, keypath, callback) {
+            obj.off('change:' + keypath, callback)
+        },
+        read: function(obj, keypath) {
+            return obj.get(keypath)
+        },
+        publish: function(obj, keypath, value) {
+            obj.set(keypath, value)
+            obj.save()
+        }
+    },
+    prefix: 'rv'
+    })
+
+})
+
+require([ 'js/models/character', 'js/views/charList', 'js/views/sheetView'], function(Character, CharList, DetailedView){   
 
 AppRouter = Backbone.Router.extend({
     routes: {

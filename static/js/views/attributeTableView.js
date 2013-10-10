@@ -10,7 +10,12 @@ define(['text!templates/attributeTable.html'], function(attribute_table_template
             this.attrs = param_obj.attrs || param_obj.attributes || []
             this.totals = param_obj.totals || []
             this.bonuses = param_obj.bonuses || []
+            this.columns = this.totals
+            _.each(this.bonuses, function(bonus){
+                
+            })
             Backbone.View.apply(this, arguments)
+            
         },
         initialize: function (){
             var model= this.model

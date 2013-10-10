@@ -1,14 +1,22 @@
-define(['js/collections/characters', 'text!templates/charListItem.html'], function(Characters, char_list_item_template){
+define(['js/collections/characters', 'text!templates/charListItem.html', 'rivets'], function(Characters, char_list_item_template, rivets){
     CharList =  Backbone.View.extend({
         initialize: function() {
             this.collection = new Characters();
+            this.chars = {}
             this.collection.on("add", this.addCharacter, this)
             this.collection.fetch()
             this.$el = $(this.el)
+            
+            this.rvView = rivets.bind(this.$el, this.chars)
+            console.log(this.rvView)
         },
         addCharacter: function (char){
-            var template = _.template(char_list_item_template, char);
-            this.$el.append(template);
+            var li = _.template(char_list_item_template, char);
+            this.chars[char.get('_id')] = char
+            this.$el.append(li);
+            this.rvView.build()
+            this.rvView.bind()
+            
         },
         events: {
             "click .a_char" : "clickChar"

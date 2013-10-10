@@ -23,7 +23,7 @@ mongo.MongoClient.connect(config.db_url, function(err, ndb) {
   } else {
       console.log("Failed to connect to :"+config.db_url);
       console.log("Make sure the database is up and the url in config.js is correct.");
-      exit(1)
+      process.abort()
   }
 });
 
