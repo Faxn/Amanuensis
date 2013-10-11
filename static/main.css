@@ -55,16 +55,20 @@ body{
 }
 
 .s_meta{
-	width: auto;
+	width:auto;
 	float:none;
 }
 
-.s_meta_component{
+.s_meta div{
 	width: 15%;
 	padding: 1%;
 	float: left;
 	border: solid black 2px;
 	background-color: orange;
+}
+
+.s_meta input{
+    width: 5em;
 }
 
 .s_abilities {

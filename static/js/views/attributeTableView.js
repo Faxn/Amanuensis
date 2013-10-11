@@ -1,5 +1,15 @@
-define(['text!templates/attributeTable.html'], function(attribute_table_template_text){
+define(['text!templates/attributeTable.html', 'rivets'], function(attribute_table_template_text, rivets){
     var attribute_table_template = _.template(attribute_table_template_text)
+    
+    rivets.formatters.total = function(attr){
+        console.log("totaling: %o", attr)
+        tot=0
+        _.each(attr, function(e, i, o){
+            if(typeof e === 'number')
+            tot += e
+        })
+        return tot
+    }
     
     /**
      * @field {Array[String]} attrs - list of attributes that make up the rows of the table.
@@ -12,7 +22,6 @@ define(['text!templates/attributeTable.html'], function(attribute_table_template
             this.bonuses = param_obj.bonuses || []
             this.columns = this.totals
             _.each(this.bonuses, function(bonus){
-                
             })
             Backbone.View.apply(this, arguments)
             
