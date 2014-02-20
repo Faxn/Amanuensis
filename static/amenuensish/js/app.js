@@ -2,32 +2,7 @@ angular.module("exampleApp", [
 	'ui.router',
 	'ui.bootstrap'
 ])
-/*
-.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider
-		.otherwise('/');
-		
-	$stateProvider
-		.state('party', {
-			url: '/',
-			template: '<p class="lead">Welcome to the UI-Router Demo</p>' +
-              '<p>Use the menu above to navigate. ' +
-              'Pay attention to the <code>$state</code> and <code>$stateParams</code> values below.</p>' +
-              '<p>Click these links—<a href="#/c?id=1">Alice</a> or ' +
-              '<a href="#/user/42">Bob</a>—to see a url redirect in action.</p>',
-			//templateUrl: 'templates/party.html',
-			controller: 'exampleCtrl'
-		})
-		.state('party.member', {
-			url: '/:member',
-			//templateUrl: 'templates/party.member.html',
-			controller: function($scope, $stateParams){
-				//$scope.person = $scope.contacts[$stateParams.id];
-			}
-		})
-	;
-})
-*/
+
 .controller('exampleCtrl', function($scope, exampleParty) {
 	$scope.party = exampleParty; // grab the party data from the factory
 	$scope.partyLength = $scope.party.length;
@@ -63,6 +38,33 @@ angular.module("exampleApp", [
 	$scope.addAttribute = function(charIndex, newAtt, newValue){
 		party[charIndex][newAtt]=newValue;
 		console.log("added attribute");
+	}
+	
+	$scope.roll = function(diceNum, diceFace, bonus) {
+		var diceResult;
+		
+		for(i=0; i++; i<diceNum) {
+			diceResult += Math.floor(Math.random()*diceFace) +1 +bonus;
+		}
+		return result;
+	}
+
+	$scope.rollAttack = function(diceFace, bonus, critMin, critMult, enemyAC){
+		var diceResult = Math.floor(Math.random()*diceFace) +1;
+		
+		if (diceResult <= critMin) { 
+			console.log("Critical Threat!");
+			diceResult = 999; //an unconfirmed crit is still a guarenteed hit
+			//roll again to confirm - 
+			diceResult = Math.floor(Math.random()*diceFace) +1 +bonus;
+			if (diceResult <= enemyAC) { 
+				console.log("Crit Confirmed!  "+critMult+"x damage!"); 
+			} 
+		}	else	{
+			diceResult += bonus;
+		}
+		
+		return diceResult;
 	}
 	
 	return $scope.exampleCtrl = this;
@@ -168,19 +170,5 @@ angular.module("exampleApp", [
 	
 	return party;
 });
-/*
-$scope.setCurrentChar = function(index) {
-		if (index > $scope.party.length() ){
-			alert("error!  index of selected character longer than the party list!");
-		} else {
-			$scope.currentChar=index;
-		}
-	}
 
-function setCurrentChar(index) {
-	currentChar = index;
-}
 
-function getCurrentChar() {
-	return currentChar;
-}*/
