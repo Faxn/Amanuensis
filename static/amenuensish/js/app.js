@@ -7,17 +7,24 @@ angular.module("exampleApp", [
 	$scope.party = exampleParty; // grab the party data from the factory
 	$scope.partyLength = $scope.party.length;
 	$scope.currentChar=3;
+	$scope.rollHistory=[]; //contents of this will look like {timestamp, charName, rollNum}
+	
+	$scope.rollOptions = [
+		{ label: 'attack', value: 'attack' },
+		{ label: 'damage', value: 'damage' },
+		{ label: 'skill',  value: 'skill'  }
+	];
 	
 	//used to save state of whether sections are collapsed or not
 	$scope.isCollapsed={
-		name: false,
-		abilites: false,
-		classes: false,
-		achpcmb:false,
-		saves: false,
-		armor: false,
-		attacks:false,
-		skills: false
+		name:		false,
+		abilites:	false,
+		classes:	false,
+		achpcmb:	false,
+		saves:		false,
+		armor:		false,
+		attacks:	false,
+		skills:		false
 	}	
 	
 	$scope.toggleCollapse = function(section) {
@@ -39,6 +46,34 @@ angular.module("exampleApp", [
 		party[charIndex][newAtt]=newValue;
 		console.log("added attribute");
 	}
+
+	$scope.handleRollRequest = function(rollType) {
+		switch (rollType) {
+			case 'damage':
+				console.log("damage roll is TODO");
+				//pull numDice, numFace, bonus out of models
+				//roll()
+				break;
+			
+			case 'attack':
+				numDice = 1, numFace = 20, enemyAC =
+				//pull numDice, numFace, critMin, enemyAC out of models
+				result = $scope.rollAttack(4, 19, 2, 14); //temporarily hardcoded
+				$scope.rollRecord($scope.party[$scope.currentChar].name, result);
+				break;
+			
+			case 'skill':
+				console.log("skill roll is TODO");
+				//TODO : pull skillBonus out of models, diceNum = 1, diceFace = 20
+				//roll() 
+				break;
+				
+			default:
+				console.error("unknown roll type passed to handleRollRequest()");
+				console.log(rollType);
+		}
+		//any other neccesary roll types?
+	}
 	
 	$scope.roll = function(diceNum, diceFace, bonus) {
 		var diceResult;
@@ -49,16 +84,17 @@ angular.module("exampleApp", [
 		return result;
 	}
 
-	$scope.rollAttack = function(diceFace, bonus, critMin, critMult, enemyAC){
-		var diceResult = Math.floor(Math.random()*diceFace) +1;
+	$scope.rollAttack = function(bonus, critMin, critMult, enemyAC){
+		var diceResult = Math.floor(Math.random()*20) +1;
 		
-		if (diceResult <= critMin) { 
+		if (diceResult >= critMin) { 
 			console.log("Critical Threat!");
 			diceResult = 999; //an unconfirmed crit is still a guarenteed hit
 			//roll again to confirm - 
-			diceResult = Math.floor(Math.random()*diceFace) +1 +bonus;
+			diceResult = Math.floor(Math.random()*20) +1 +bonus;
 			if (diceResult <= enemyAC) { 
 				console.log("Crit Confirmed!  "+critMult+"x damage!"); 
+				diceResult += " (CRIT)"//maybe instead it should return 'CRIT'?
 			} 
 		}	else	{
 			diceResult += bonus;
@@ -67,54 +103,17 @@ angular.module("exampleApp", [
 		return diceResult;
 	}
 	
+	$scope.rollRecord = function(charName, rollNum) {
+		timestamp = new Date().getTime();
+		$scope.rollHistory.push( {timestamp: timestamp, charName: charName, rollNum: rollNum} );
+	}
+	
+	$scope.resetRollHistory = function() {
+		$scope.rollHistory = [];
+	}
+	
 	return $scope.exampleCtrl = this;
 })
-
-
-/* proposed final structure of a 'default character'
-	ID: 1,
-	description: {
-		name: "Vaesir",
-		player: "Alpere",
-		campaign: "Kingmaker"
-	},
-	metadata: {
-		maybe throw some data in here describing the last time the char data was read/written?
-	},
-	stats: {
-		
-		STR: {
-			base: 10,
-			racial: 2,
-			}
-		baseDEX: 10,
-		baseCON: 10,
-		baseINT: 10,
-		baseWIS: 10,
-		baseCHA: 10
-	},
-	skills: {
-		allOfThem: 0;
-	},	
-	feats: [
-		{
-			name: "dodge",
-			description: "+1 dodge AC",
-			effects: [
-				{
-					target: "AC",
-					value: 1	//this would be negative if it was penalty
-				}
-			]
-	],
-	//would it be advantageous to store calculated values (like HP) within the JSON, or better as a variable floating around in the controllers?
-	metasStats: {
-		HP: 23,
-		AC: 13,
-		speed: 30
-	},	
-
-*/
 
 .factory("exampleParty", function() {
 	//this will eventually be replaced with a service that grabs party data from a server
@@ -129,7 +128,16 @@ angular.module("exampleApp", [
 			CON: 15,
 			INT: 14,
 			WIS: 8,
-			CHA: 10
+			CHA: 10,
+			attack : {
+				name: "lance",
+				toHit: 4,
+				damageDiceNum: 1,
+				damageDiceFace: 10,
+				damageBonus: 5,
+				critMin: 20,
+				critMult: 4
+			}
 		},
 		{
 			name: 'Faxn',
@@ -140,7 +148,16 @@ angular.module("exampleApp", [
 			CON: 14,
 			INT: 18,
 			WIS: 8,
-			CHA: 8
+			CHA: 8,
+			attack : {
+				name: "Shillelagh",
+				toHit: 2,
+				damageDiceNum: 1,
+				damageDiceFace: 6,
+				damageBonus: 1,
+				critMin: 20,
+				critMult: 2
+			}
 		},
 		{
 			name: 'Hungaron',

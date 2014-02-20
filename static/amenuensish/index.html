@@ -111,6 +111,26 @@
 	</div>
 	-->	
 	<!--<div ui-view ng-animate="{enter:'fade-enter'}"></div> -->
+
+	<hr>
+	
+	<div class="row">
+		<!-- an attack roller and the roll history will go here -->
+		<p>Currently rolling for: <em>{{party[currentChar].name}}</em></p>
+		
+		<!-- dropdown for selecting attack, damage, or skill-->
+		<select ng-model="selectedRollOption" ng-options="opt as opt.label for opt in rollOptions"></select>
+		
+		
+		<button type='button' class="btn btn-primary btn-lg" ng-click="handleRollRequest(selectedRollOption.value)">roll!</button>
+		<table class="table">
+			<tbody>
+				<tr ng-repeat="roll in rollHistory"> <td>{{roll.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>	<td>{{roll.charName}}</td>	<td>{{roll.rollNum}}</td>	</tr>					
+			<tbody>
+		</table>
+		
+	</div>
+	
 </div> <!-- /content -->
     
 <script src="lib/angular.min.js"></script>
