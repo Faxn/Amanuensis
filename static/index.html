@@ -120,17 +120,23 @@
 		
 		<!-- dropdown for selecting attack, damage, or skill-->
 		<select ng-model="selectedRollOption" ng-options="opt as opt.label for opt in rollOptions"></select>
-		
-		
+		<br><p>enemy AC (if applicable) - </p> <input type="text" ng-model="enemyAC"/>
 		<button type='button' class="btn btn-primary btn-lg" ng-click="handleRollRequest(selectedRollOption.value)">roll!</button>
 		<table class="table">
 			<tbody>
-				<tr ng-repeat="roll in rollHistory"> <td>{{roll.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>	<td>{{roll.charName}}</td>	<td>{{roll.rollNum}}</td>	</tr>					
+				<tr ng-repeat="roll in rollHistory"> <td>{{roll.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>	<td>{{roll.charName}}</td> <td>{{roll.type}}</td> <td>{{roll.dice}}	<td>{{roll.rollNum}}</td>	</tr>					
 			<tbody>
 		</table>
 		
 	</div>
 	
+	<hr>
+	
+	<div class="row">
+		<h3>Skill roller example</h3>
+		<input type="text" ng-model="selected" typeahead="skill for skill in skillList | filter:$viewValue | limitTo:8" class="form-control">
+		<button type='button' class="btn btn-primary btn-lg" ng-click="handleRollRequest('skill')">roll skill!</button>
+	</div>
 </div> <!-- /content -->
     
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>

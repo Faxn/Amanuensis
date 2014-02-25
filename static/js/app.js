@@ -15,6 +15,15 @@ angular.module("exampleApp", [
 		{ label: 'skill',  value: 'skill'  }
 	];
 	
+	$scope.skillList = [
+		'Acrobatics', 'Appraise', 'Bluff', 'Climb', 'Craft', 'Diplomacy', 'Disable Device', 
+		'Disguise', 'Escape Artist', 'Fly', 'Handle Animal', 'Heal', 'Intimidate', 'Knowledge (Arcana)', 
+		'Knowledge (Dungeoneering)', 'Knowledge (Engineering)', 'Knowledge (Geography)', 
+		'Knowledge (History)', 'Knowledge (Local)', 'Knowledge (Nature)', 'Knowledge (Nobility)', 
+		'Knowledge (Planes)', 'Knowledge (Religion)', 'Linguistics', 'Perception', 'Perform', 'Profession',
+		'Ride', 'Sense Motive', 'Sleight of Hand', 'Spellcraft', 'Stealth', 'Survival', 'Swim', 'Use Magic Device'		
+	];
+	
 	//used to save state of whether sections are collapsed or not
 	$scope.isCollapsed={
 		name:		false,
@@ -50,22 +59,24 @@ angular.module("exampleApp", [
 	$scope.handleRollRequest = function(rollType) {
 		switch (rollType) {
 			case 'damage':
-				console.log("damage roll is TODO");
-				//pull numDice, numFace, bonus out of models
-				//roll()
+				var tempAttack = $scope.party[$scope.currentChar].attack, damageResult;
+				if(tempAttack === undefined) {
+					alert('Currentlly selected character does not have an attack');
+				}
+				damageResult = roll(tempAttack.damageDiceNum, tempAttack.damageDiceFace, tempAttack.damageBonus);
+				dice = tempAttack.damageDiceNum+'d'+tempAttack.damageDiceFace+'+'+tempAttack.damageBonus;
+				rollRecord($scope.party[$scope.currentChar].name, damageResult, dice, 'damage');
 				break;
 			
 			case 'attack':
-				numDice = 1, numFace = 20, enemyAC =
-				//pull numDice, numFace, critMin, enemyAC out of models
-				result = $scope.rollAttack(4, 19, 2, 14); //temporarily hardcoded
-				$scope.rollRecord($scope.party[$scope.currentChar].name, result);
+				console.log("attack roll is TODO");
+				//var theChar = $scope.party[$scope.currentChar], enemyAC = $scope.enemyAC;
+				//$scope.rollRecord(theChar.name, $scope.rollAttack(theChar.attack.toHit, theChar.attack.critMin, theChar.attack.critMult, enemyAC));
 				break;
 			
 			case 'skill':
 				console.log("skill roll is TODO");
-				//TODO : pull skillBonus out of models, diceNum = 1, diceFace = 20
-				//roll() 
+				//console.log($scope.rollSkill());
 				break;
 				
 			default:
@@ -75,16 +86,19 @@ angular.module("exampleApp", [
 		//any other neccesary roll types?
 	}
 	
-	$scope.roll = function(diceNum, diceFace, bonus) {
-		var diceResult;
-		
-		for(i=0; i++; i<diceNum) {
+	roll = function(diceNum, diceFace, bonus) {
+		var diceResult = 0;
+		for( i=0 ; i<diceNum ; i++ ) {
 			diceResult += Math.floor(Math.random()*diceFace) +1 +bonus;
 		}
-		return result;
+		return diceResult;
 	}
-
-	$scope.rollAttack = function(bonus, critMin, critMult, enemyAC){
+	
+	quack = function() {
+		console.log("quack");
+	}
+	
+	rollAttack = function(bonus, critMin, critMult, enemyAC){
 		var diceResult = Math.floor(Math.random()*20) +1;
 		
 		if (diceResult >= critMin) { 
@@ -103,12 +117,17 @@ angular.module("exampleApp", [
 		return diceResult;
 	}
 	
-	$scope.rollRecord = function(charName, rollNum) {
-		timestamp = new Date().getTime();
-		$scope.rollHistory.push( {timestamp: timestamp, charName: charName, rollNum: rollNum} );
+	rollSkill = function() {
+		var result = roll(1, 20, 5); //replace 5 with a reference to the relevant skill
+		return result;
 	}
 	
-	$scope.resetRollHistory = function() {
+	rollRecord = function(charName, rollNum, dice, type) {
+		timestamp = new Date().getTime();
+		$scope.rollHistory.push( {timestamp: timestamp, charName: charName, rollNum: rollNum, dice:dice, type: type} );
+	}
+	
+	resetRollHistory = function() {
 		$scope.rollHistory = [];
 	}
 	
@@ -121,7 +140,9 @@ angular.module("exampleApp", [
 	party = [
 		{
 			name: 'Vaesir',
-			charclass: 'cavalier',
+			classes: [
+				{ cavalier: 3 }
+			],
 			race: 'human',
 			STR: 16,
 			DEX: 14,
@@ -141,7 +162,10 @@ angular.module("exampleApp", [
 		},
 		{
 			name: 'Faxn',
-			charclass: 'wizard',
+			classes: [
+				{ druid: 3 },
+				{ megafrog: 1 }
+			],
 			race: 'gripli',
 			STR: 8,
 			DEX: 14,
@@ -161,18 +185,33 @@ angular.module("exampleApp", [
 		},
 		{
 			name: 'Hungaron',
-			charclass: 'slime lord',
+			classes: [
+				{ wizard: 3 },
+				{ slimelord: 2 }
+			],
 			race: 'slime?',
 			STR: 10,
 			DEX: 14,
 			CON: 16,
 			INT: 18,
 			WIS: 8,
-			CHA: 4
+			CHA: 4,
+			attack : {
+				name: "slime bolt",
+				toHit: 2,
+				damageDiceNum: 3,
+				damageDiceFace: 4,
+				damageBonus: 1,
+				critMin: 20,
+				critMult: 2
+			}
 		},
 		{
 			name: 'Grobbins',
-			charclass: 'bard',
+			classes: [
+				{ bard: 2 },
+				{ alchemist: 1 }
+			],
 			race: 'goblin',
 			STR: 7,
 			STRrace:-2,
@@ -181,7 +220,16 @@ angular.module("exampleApp", [
 			CON: 17,
 			INT: 5,
 			WIS: 3,
-			CHA: 7
+			CHA: 7,
+			attack : {
+				name: "firebomb",
+				toHit: 3,
+				damageDiceNum: 2,
+				damageDiceFace: 6,
+				damageBonus: 2,
+				critMin: 20,
+				critMult: 2
+			}
 		}	
 	];
 	
