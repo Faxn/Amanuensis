@@ -49,14 +49,24 @@ angular.module("exampleApp", [
 		}
 	}
 	
-	$scope.removeAttribute = function(charIndex, att) {
+	$scope.addSkill = function() {
+		//will cause an error if you try to push to skills, but skills is not defined
+		$scope.party[$scope.currentChar].skills.push({"name":"","ranks":0});
 	}
 	
-	$scope.addAttribute = function(charIndex, newAtt, newValue){
-		party[charIndex][newAtt]=newValue;
-		console.log("added attribute");
+	$scope.removeSkill = function(index) {
+		$scope.party[$scope.currentChar].skills.splice(index,1);
 	}
-
+	
+	$scope.addClass = function() {
+		//will cause an error if you try to push to skills, but skills is not defined
+		$scope.party[$scope.currentChar].classes.push({"name":"","ranks":0});
+	}
+	
+	$scope.removeClass = function(index) {
+		$scope.party[$scope.currentChar].classes.splice(index,1);
+	}
+	
 	$scope.handleRollRequest = function(rollType) {
 		switch (rollType) {
 			case 'damage':
@@ -140,7 +150,7 @@ angular.module("exampleApp", [
 		{
 			name: 'Vaesir',
 			classes: [
-				{ cavalier: 3 }
+				{ name: 'cavalier', lvls: 3 }
 			],
 			race: 'human',
 			STR: 16,
@@ -162,8 +172,8 @@ angular.module("exampleApp", [
 		{
 			name: 'Faxn',
 			classes: [
-				{ druid: 3 },
-				{ megafrog: 1 }
+				{ name: 'druid', lvls: 3 },
+				{ name: 'megafrog', lvls: 1 }
 			],
 			race: 'gripli',
 			STR: 8,
@@ -185,8 +195,8 @@ angular.module("exampleApp", [
 		{
 			name: 'Hungaron',
 			classes: [
-				{ wizard: 3 },
-				{ slimelord: 2 }
+				{ name: 'wizard', lvls: 3 },
+				{ name: 'slimelord', lvls: 2 }
 			],
 			race: 'slime?',
 			STR: 10,
@@ -208,8 +218,8 @@ angular.module("exampleApp", [
 		{
 			name: 'Grobbins',
 			classes: [
-				{ bard: 2 },
-				{ alchemist: 1 }
+				{ name: 'bard', lvls: 2 },
+				{ name: 'alchemist', lvls: 1 }
 			],
 			race: 'goblin',
 			STR: 7,

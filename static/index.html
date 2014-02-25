@@ -64,7 +64,20 @@
 	
 	<div class="row">
 		<div class="col-md-2" ng-click="toggleCollapse('classes')"><h4>Classes</h4></div>
-		<div class="col-md-10" collapse="isCollapsed.classes">{{party[currentChar].charclass}}</div>
+		<div class="col-md-10" collapse="isCollapsed.classes">
+			<table>
+				<thead>
+					<tr>	<th>class</th>	<th>levels</th> </tr>
+				</thead>
+							
+				<tbody>
+					<tr ng-repeat="class in party[currentChar].classes">	
+						<td><input type="text" ng-model="class.name"/></td> <td><input type="text" ng-model="class.lvls"/></td>	<td><button type="button" class="btn btn-danger" ng-click="removeClass($index)">remove</button></td>	
+					</tr>
+					<tr>	<td></td><td></td> <td><button type="button" class="btn btn-primary" ng-click="addClass()">add new</button></td> </tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 	<hr>
 	
@@ -102,9 +115,9 @@
 							
 				<tbody>
 					<tr ng-repeat="skill in party[currentChar].skills">	
-						<td><input type="text" ng-model="skill.name"/></td> <td>TODO</td>	<td><input type="text" ng-model="skill.ranks"/></td><td>TODO</td><td>TODO</td>	<td> <button type="button" class="btn btn-danger">remove(todo)</button></td>	
+						<td><input type="text" ng-model="skill.name"/></td> <td>TODO</td>	<td><input type="text" ng-model="skill.ranks"/></td><td>TODO</td><td>TODO</td>	<td> <button type="button" class="btn btn-danger" ng-click="removeSkill($index)">remove</button></td>	
 					</tr>
-					<tr>	<td></td><td></td><td></td><td></td><td></td><td><button type="button" class="btn btn-primary">add new(todo)</button></td> </tr>
+					<tr>	<td></td><td></td><td></td><td></td><td></td><td><button type="button" class="btn btn-primary" ng-click="addSkill()">add new</button></td> </tr>
 				</tbody>
 			</table>
 		</div>
