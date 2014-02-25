@@ -15,6 +15,7 @@ angular.module("exampleApp", [
 		{ label: 'skill',  value: 'skill'  }
 	];
 	
+	//used only as a filter when typing in skill searches
 	$scope.skillList = [
 		'Acrobatics', 'Appraise', 'Bluff', 'Climb', 'Craft', 'Diplomacy', 'Disable Device', 
 		'Disguise', 'Escape Artist', 'Fly', 'Handle Animal', 'Heal', 'Intimidate', 'Knowledge (Arcana)', 
@@ -102,15 +103,10 @@ angular.module("exampleApp", [
 		return diceResult;
 	}
 	
-	quack = function() {
-		console.log("quack");
-	}
-	
 	rollAttack = function(bonus, critMin, critMult){
 		var diceResult = Math.floor(Math.random()*20) +1;
 		
 		if (diceResult >= critMin) { 
-			console.log("Critical Threat!");
 			diceResult = Math.floor(Math.random()*20) +1 +bonus;
 			diceResult = "CRIT THREAT: "+diceResult;
 		}	else	{
@@ -121,7 +117,7 @@ angular.module("exampleApp", [
 	}
 	
 	rollSkill = function(skillBonus) {
-		var result = roll(1, 20, skillBonus); //replace 5 with a reference to the relevant skill
+		var result = roll(1, 20, skillBonus); 
 		return result;
 	}
 	

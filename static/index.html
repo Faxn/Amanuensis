@@ -109,30 +109,16 @@
 			</table>
 		</div>
 	</div>
-	<!--  waiting for superstructure to be set up
-	<div class="row">
-		<div class="col-md-3"></div>
-		<div class="col-md-6">
-			<table class="table table-bordered table-striped"> 
-				<tbody>
-					<tr ng-repeat='(key, value) in party[currentChar]'>	<td>{{key}}</td> <td><input type="text" ng-model="party[currentChar][key]" > </td> </tr>
-					<tr> <td> <button class="button" ng-click="addAttribute(currentChar, newAttName, '')">!!!</button> </td> <td> <input type="text" ng-model="newAttName"></td> </tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="col-md-3"></div>
-	</div>
-	-->	
-	<!--<div ui-view ng-animate="{enter:'fade-enter'}"></div> -->
 
 	<hr>
 	
 	<div class="row">
-		<!-- an attack roller and the roll history will go here -->
 		<p>Currently rolling for: <em>{{party[currentChar].name}}</em></p>
 		
 		<!-- dropdown for selecting attack, damage, or skill-->
 		<select ng-model="selectedRollOption" ng-options="opt as opt.label for opt in rollOptions"></select>
+		
+		<!--autocompleting input bar for selecting skills -->
 		<p> skill (only applies if you make a skill roll) : <input type="text" ng-model="selectedSkill" typeahead="skill for skill in skillList | filter:$viewValue | limitTo:8" class="form-control"></p>
 		<br><button type='button' class="btn btn-primary btn-lg" ng-click="handleRollRequest(selectedRollOption.value)">roll!</button>
 		<table class="table">
