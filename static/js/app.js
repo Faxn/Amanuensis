@@ -69,9 +69,10 @@ angular.module("exampleApp", [
 				break;
 			
 			case 'attack':
-				console.log("attack roll is TODO");
-				//var theChar = $scope.party[$scope.currentChar], enemyAC = $scope.enemyAC;
-				//$scope.rollRecord(theChar.name, $scope.rollAttack(theChar.attack.toHit, theChar.attack.critMin, theChar.attack.critMult, enemyAC));
+				var theChar = $scope.party[$scope.currentChar];
+				rollResult = rollAttack(theChar.attack.toHit, theChar.attack.critMin, theChar.attack.critMult);
+				rollRecord(theChar.name, rollResult, "d20+"+theChar.attack.toHit, 'attack');
+				
 				break;
 			
 			case 'skill':
@@ -98,18 +99,13 @@ angular.module("exampleApp", [
 		console.log("quack");
 	}
 	
-	rollAttack = function(bonus, critMin, critMult, enemyAC){
+	rollAttack = function(bonus, critMin, critMult){
 		var diceResult = Math.floor(Math.random()*20) +1;
 		
 		if (diceResult >= critMin) { 
 			console.log("Critical Threat!");
-			diceResult = 999; //an unconfirmed crit is still a guarenteed hit
-			//roll again to confirm - 
 			diceResult = Math.floor(Math.random()*20) +1 +bonus;
-			if (diceResult <= enemyAC) { 
-				console.log("Crit Confirmed!  "+critMult+"x damage!"); 
-				diceResult += " (CRIT)"//maybe instead it should return 'CRIT'?
-			} 
+			diceResult = "CRIT THREAT: "+diceResult;
 		}	else	{
 			diceResult += bonus;
 		}

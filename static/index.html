@@ -120,7 +120,6 @@
 		
 		<!-- dropdown for selecting attack, damage, or skill-->
 		<select ng-model="selectedRollOption" ng-options="opt as opt.label for opt in rollOptions"></select>
-		<br><p>enemy AC (if applicable) - </p> <input type="text" ng-model="enemyAC"/>
 		<button type='button' class="btn btn-primary btn-lg" ng-click="handleRollRequest(selectedRollOption.value)">roll!</button>
 		<table class="table">
 			<tbody>
