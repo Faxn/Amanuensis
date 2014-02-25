@@ -76,8 +76,15 @@ angular.module("exampleApp", [
 				break;
 			
 			case 'skill':
-				console.log("skill roll is TODO");
-				//console.log($scope.rollSkill());
+				var bonus = 0, tempChar = $scope.party[$scope.currentChar];
+
+				for( i=0 ; i<tempChar.skills.length ; i++ ) {
+					if (tempChar.skills[i].name === $scope.selectedSkill) {
+						bonus = tempChar.skills[i].ranks
+					}
+				}
+				rollRecord( tempChar.name, rollSkill(bonus), "d20+ "+bonus, $scope.selectedSkill);
+				
 				break;
 				
 			default:
@@ -113,8 +120,8 @@ angular.module("exampleApp", [
 		return diceResult;
 	}
 	
-	rollSkill = function() {
-		var result = roll(1, 20, 5); //replace 5 with a reference to the relevant skill
+	rollSkill = function(skillBonus) {
+		var result = roll(1, 20, skillBonus); //replace 5 with a reference to the relevant skill
 		return result;
 	}
 	
@@ -225,7 +232,12 @@ angular.module("exampleApp", [
 				damageBonus: 2,
 				critMin: 20,
 				critMult: 2
-			}
+			},
+			skills : [
+				{ name: 'Acrobatics', ranks: 1 },
+				{ name: 'Knowledge (Arcana)', ranks: 4 },
+				{ name: 'Craft', ranks: 3 },
+			]
 		}	
 	];
 	

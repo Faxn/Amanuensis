@@ -94,7 +94,20 @@
 	
 	<div class="row">
 		<div class="col-md-2" ng-click="toggleCollapse('skills')"><h4>Skills</h4></div>
-		<div class="col-md-10" collapse="isCollapsed.skills">2 pay the bills</div>
+		<div class="col-md-10" collapse="isCollapsed.skills">
+			<table>
+				<thead>
+					<tr>	<th>skill</th>	<th>class skill?</th> <th>rank</th> <th>ATT</th> <th>total</th>  <th>Remove skill</th> </tr>
+				</thead>
+							
+				<tbody>
+					<tr ng-repeat="skill in party[currentChar].skills">	
+						<td><input type="text" ng-model="skill.name"/></td> <td>TODO</td>	<td><input type="text" ng-model="skill.ranks"/></td><td>TODO</td><td>TODO</td>	<td> <button type="button" class="btn btn-danger">remove(todo)</button></td>	
+					</tr>
+					<tr>	<td></td><td></td><td></td><td></td><td></td><td><button type="button" class="btn btn-primary">add new(todo)</button></td> </tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 	<!--  waiting for superstructure to be set up
 	<div class="row">
@@ -120,7 +133,8 @@
 		
 		<!-- dropdown for selecting attack, damage, or skill-->
 		<select ng-model="selectedRollOption" ng-options="opt as opt.label for opt in rollOptions"></select>
-		<button type='button' class="btn btn-primary btn-lg" ng-click="handleRollRequest(selectedRollOption.value)">roll!</button>
+		<p> skill (only applies if you make a skill roll) : <input type="text" ng-model="selectedSkill" typeahead="skill for skill in skillList | filter:$viewValue | limitTo:8" class="form-control"></p>
+		<br><button type='button' class="btn btn-primary btn-lg" ng-click="handleRollRequest(selectedRollOption.value)">roll!</button>
 		<table class="table">
 			<tbody>
 				<tr ng-repeat="roll in rollHistory"> <td>{{roll.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>	<td>{{roll.charName}}</td> <td>{{roll.type}}</td> <td>{{roll.dice}}	<td>{{roll.rollNum}}</td>	</tr>					
@@ -129,13 +143,7 @@
 		
 	</div>
 	
-	<hr>
-	
-	<div class="row">
-		<h3>Skill roller example</h3>
-		<input type="text" ng-model="selected" typeahead="skill for skill in skillList | filter:$viewValue | limitTo:8" class="form-control">
-		<button type='button' class="btn btn-primary btn-lg" ng-click="handleRollRequest('skill')">roll skill!</button>
-	</div>
+
 </div> <!-- /content -->
     
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
