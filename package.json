@@ -9,7 +9,8 @@
         "jquery":"*",
         "mongodb-rest":"*",
         "amdefine":"*",
-        "backbone":"*"
+        "backbone":"*",
+        "jasmine-node":">=1.14"
     },
     "engeine":"v0.10.5"
 }
