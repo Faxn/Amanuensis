@@ -4,7 +4,8 @@ module.exports = function(config){
 
     files : [
       'static/lib/angular.js',
-      'static/lib/angular-route.js',
+      //'static/lib/angular-route.js',
+      'static/lib/angular-ui-router.js',
       'test/lib/*.js',
       'static/js/app.js',
       'static/js/*.js',

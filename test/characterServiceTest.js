@@ -3,7 +3,7 @@
 /* jasmine specs for services go here */
 
 describe('AmCharacter', function() {
-   module('amanuensis');
+   beforeEach(angular.mock.module('amanuensis.character'));
    
    var sample_grobbins = {
    name: 'grobbins',
@@ -20,18 +20,22 @@ describe('AmCharacter', function() {
    var sample_hungammera = {};
    
    var AmCharacter = null;
-   var version = null;
-   it('should load', inject(function(_AmCharacter_, _version_) {
+   it('should load', inject(function(_AmCharacter_) {
       AmCharacter = _AmCharacter_;
-      version = _version_;
    }));
    
    describe('Constructor', function() {
-      it('should not be null.', function() {
-         console.log(AmCharacter);
-         expect(version).toBe(1);
+      it('should be a constructor.', function() {
          expect(AmCharacter).not.toBe(null);
+         expect(typeof AmCharacter).toBe('function');
       });
+      
+      var grobbins;
+      it('should make the sample chars', function(){
+         grobbins = new AmCharacter(sample_grobbins);
+         expect(grobbins).not.toBe(undefined);
+      });
+            
    });
 });
 /*

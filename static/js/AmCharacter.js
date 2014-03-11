@@ -1,15 +1,16 @@
 'use strict';
 
-angular.module("amanuensis")
+angular.module('amanuensis.character', [])
 
-.value('version', 1)
-
-.value('AmCharacter', 1)
-/*
-.service('AmCharacter' [function(){
-    
-    return function (charDoc){
-        return 4553;
+/**
+ * 
+ */
+.factory('AmCharacter', [function(){
+    function  AmCharacter(charDoc){
+        return {};
     }
-}]);
-*/ ;
+    
+    return AmCharacter;
+    
+}])
+;
