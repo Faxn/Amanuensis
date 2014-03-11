@@ -1,4 +1,4 @@
-angular.module("exampleApp", [
+angular.module("amanuensis", [
 	'ui.router',
 	'ui.bootstrap'
 ])
