@@ -1,12 +1,12 @@
-/*
+
 note that:
     * Queries return only top level documents so far as I can tell.
     * Collections can have  documents of differnt /Types/ tell them apart with $exists querys.
     * It is rare to not want the whole document at once when dealing with characters.
     * It's easy to deal with flatter structures.
-*/
 
-amanuensis.org/%campaign%/%system.html%
+
+amanuensis.org/%campaign%/#%routing%
 
 
 seperate campaigns get their own collection in mongo. 
@@ -28,7 +28,8 @@ system_opts: {
  
 {
      name: "Grobbins",
-     schema:"pf_character",
+     schema:"character",
+     system: "pathfinder",
      
      "Strength":{
          "base": 10
