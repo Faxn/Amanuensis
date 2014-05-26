@@ -50,7 +50,7 @@ system_opts: {
      //distributed modifier schema
      //called nodes here but in d20 refers to levels
      //in GURPS it's a flat list of advantages disadvantages and such.
-     nodes[ 
+     mods:[ 
          { //level 0
            // While parsing the character create an array for 
             // each value that appears in a apply-to list 
@@ -59,13 +59,12 @@ system_opts: {
             apply-to: ["Str"]                        
             value: 2 // system specific. d20 would use numbers references and dice expressions
             type: "Racial" // d20 might use this to deal with non-stacking modifiers
-                                            
          }
          { //level 1
              apply-to: "levels" // recall that apply-to is just building a list of references. It doesn't have to sum them.
              class: "Fast Ordinary"
              
-             nodes[ //parsing checks each object for a nodes property and descends into it.  
+             mods:[ //parsing checks each object for a nodes property and descends into it.  
                 {
                     
                 }                     

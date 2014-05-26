@@ -5,38 +5,67 @@
 describe('AmCharacter', function() {
    beforeEach(angular.mock.module('amanuensis.character'));
    
-   var sample_grobbins = {
-   name: 'grobbins',
-     nodes: [
-        [
-            {'apply-to': 'Strength', 'value': 10, 'type':'Base'},
-            {'apply-to': 'Strength', 'value': -4, 'type':'Racial', 'comment':'Goblin'},
-            {'apply-to': 'Dexterity', 'value': 10, 'type':'Base'},
-            {'apply-to': 'Dexterity', 'value': 2, 'type':'Racial', 'comment':'Goblin'}
-        ]
-     ]
-   };    
-   var sample_kabutojirra = {};
-   var sample_hungammera = {};
    
+      
    var AmCharacter = null;
-   it('should load', inject(function(_AmCharacter_) {
-      AmCharacter = _AmCharacter_;
-   }));
    
-   describe('Constructor', function() {
+   
+   describe('the module', function() {
+      it('should load', inject(function(_AmCharacter_) {
+         AmCharacter = _AmCharacter_;
+      }));
+      
       it('should be a constructor.', function() {
          expect(AmCharacter).not.toBe(null);
          expect(typeof AmCharacter).toBe('function');
       });
-      
-      var grobbins;
-      it('should make the sample chars', function(){
-         grobbins = new AmCharacter(sample_grobbins);
-         expect(grobbins).not.toBe(undefined);
-      });
-            
    });
+   
+   //because of how jasmine executes we need to build a function for the
+   //suite of tests that will run on each of the test characters.
+   function testCharacter(dataSet){
+   describe(dataSet['character']['name'], function (){
+      
+      var character;
+      it('should construct without error', function(){
+         character = new AmCharacter(dataSet['character']);
+         expect(character).not.toBe(undefined);
+      });
+      
+      if(dataSet['mods'] != undefined){
+         it('should be able to extract the mods from the structured character', function(){
+            var expectedMods = dataSet['mods'];
+            var actualMods = character.getMods();
+            
+            expect(actualMods.length).toBe(expectedMods.length);
+            for(var mod of expectedMods) {
+               expect(actualMods).toContain(mod);
+            }            
+         });
+      }
+      
+      
+      if(dataSet['stats'] != undefined){
+         it('should figure out what stats are on the character.', function(){
+            var expectedStats = dataSet['stats'];
+            var actualStats = character.getStats();
+            
+            expect(actualStats.length).toBe(expectedStats.length);
+            for(var stat of expectedStats) {
+               expect(actualStats).toContain(stat);
+            }            
+         });
+      }
+      
+      
+   })
+   }
+   
+   for(var dataSet of testCharacters){
+      testCharacter(dataSet);
+   }
+   
+   
 });
 /*
 module('amanuensis');
