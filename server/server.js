@@ -6,12 +6,14 @@ var http = require('http'),
     mongo = require('mongodb'),
     $ = require('jquery'),
     _ = require('underscore'),
-    config = require('./config')
+    config = require('./config'),
+    bodyParser = require('body-parser'),
+    serveStatic = require('serve-static')
     
 
 // configure the app
 var app = express();
-app.use(express.bodyParser());
+app.use(bodyParser.json());
 app.config = config
 
 // Connect to the database
@@ -38,8 +40,8 @@ function logErrorReturn(err, thing){
 }
 
 //host static files.
-app.use(express.static(__dirname + '/static'));
-app.use(express.bodyParser());
+app.use(serveStatic('public/'));
+
 
 //database convience methods
 function addModifier(xpc, modifier){
@@ -90,7 +92,7 @@ app.get('/characters/:id', function(req, res){
 });
 
 // Add a single character to the character collection
-app.post('/characters', express.bodyParser(), function (req, res){
+app.post('/characters', bodyParser.json(), function (req, res){
     console.log("adding Character: ", req.body);
     //TODO: return the id of the created character or possibly anything but yes in case of error.
     app.db_char.save(req.body, logErrorReturn);
@@ -98,7 +100,7 @@ app.post('/characters', express.bodyParser(), function (req, res){
 });
 
 // update a character.
-app.put('/characters/:id', express.bodyParser(), function (req, res){
+app.put('/characters/:id', bodyParser.json(), function (req, res){
     req.body._id = mongo.ObjectID(req.params.id)
     console.log("Updating Character: ", req.body);
     if(!req.body.name){
