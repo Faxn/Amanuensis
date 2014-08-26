@@ -1,12 +1,13 @@
-'use strict';
+//'use strict';
 
 /* jasmine specs for services go here */
 
+//describe
+
+
 describe('AmCharacter', function() {
    beforeEach(angular.mock.module('amanuensis.character'));
-   
-   
-      
+     
    var AmCharacter = null;
    
    
@@ -38,12 +39,12 @@ describe('AmCharacter', function() {
             var actualMods = character.getMods();
             
             expect(actualMods.length).toBe(expectedMods.length);
-            for(var mod of expectedMods) {
+            expectedMods.forEach(function(mod) {
                expect(actualMods).toContain(mod);
-            }            
+            })
          });
       }
-      
+
       
       if(dataSet['stats'] != undefined){
          it('should figure out what stats are on the character.', function(){
@@ -51,9 +52,9 @@ describe('AmCharacter', function() {
             var actualStats = character.getStats();
             
             expect(actualStats.length).toBe(expectedStats.length);
-            for(var stat of expectedStats) {
+            expectedStats.forEach(function(stat) {
                expect(actualStats).toContain(stat);
-            }            
+            })
          });
       }
       
@@ -61,9 +62,10 @@ describe('AmCharacter', function() {
    })
    }
    
-   for(var dataSet of testCharacters){
+   //testCharacters defined in characterProvider.js
+   testCharacters.forEach(function(dataSet){ 
       testCharacter(dataSet);
-   }
+   })
    
    
 });

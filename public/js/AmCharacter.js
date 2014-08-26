@@ -24,10 +24,10 @@ angular.module('amanuensis.character', [])
              mods.push(node);
        }
        
-       if(node['@@iterator'] != undefined){
-          for(var e of node){
+       if(node.forEach != undefined){
+          node.forEach(function(e){
             mods = mods.concat(findMods(e, visited));
-          }
+          })
        }
        
        if(node.mods != undefined){
@@ -47,12 +47,12 @@ angular.module('amanuensis.character', [])
     proto.getStats = function (){
        var stats = [];
        
-       for(var mod of this.getMods() ){
+       this.getMods().forEach(function(mod){
           //stats.push(mod);
           if(stats.indexOf(mod['apply-to']) < 0 ) {
             stats.push(mod['apply-to']);
           }
-       }
+       })
        
        return stats;
     }

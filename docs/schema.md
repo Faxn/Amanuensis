@@ -74,13 +74,11 @@ system_opts: {
 }
     
 
-// equiptment floats around with charecters in the same collection.
+// equiptment is embeded in it's owner.
+//
 {
-    // might refer to charecter or object or be null. 
-    //This is how the cart owns stuff.
-    //2-sided weapons are 2 objects, one owns the other.
-    owner: <objectID>,
-                     
+    // might refer to character or object or be null. 
+    //This is how the cart owns stuff.                 
     quantity: 1,
     name: Vorpal Sword,
     taxon: weapon,
