@@ -1,12 +1,12 @@
-'use strict';
-
-angular.module('amanuensis.character', [])
-
 /**
+ * AMD module to preform verification and stat derivation on a character.
  * 
+ * For use on both client and server sides.
  */
-.factory('AmCharacter', [function(){
-    function  AmCharacter(charData){
+
+define('character', [], function(){
+	
+	function  AmCharacter(charData){
         this.charData = charData;
     }
     
@@ -59,5 +59,4 @@ angular.module('amanuensis.character', [])
     
     return AmCharacter;
     
-}])
-;
+});
