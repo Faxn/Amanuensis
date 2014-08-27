@@ -39,6 +39,7 @@ describe('AmCharacter', function() {
             var actualMods = character.getMods();
             
             expect(actualMods.length).toBe(expectedMods.length);
+            expect(actualMods.length).not.toBe(0);
             expectedMods.forEach(function(mod) {
                expect(actualMods).toContain(mod);
             })
@@ -54,6 +55,9 @@ describe('AmCharacter', function() {
             expect(actualStats.length).toBe(expectedStats.length);
             expectedStats.forEach(function(stat) {
                expect(actualStats).toContain(stat);
+               if(dataSet['statValues'] != null && dataSet['statValues'][stat] != undefined){
+                  expect(character.get(stat)).toBe(dataSet['statValues'][stat])
+               }
             })
          });
       }

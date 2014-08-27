@@ -57,6 +57,19 @@ define('character', [], function(){
        return stats;
     }
     
+    /**
+     * get the value of a stat.
+     */
+    proto.get = function(stat){
+        var value = 0;
+       this.getMods().forEach(function(mod){
+            if(mod['apply-to'] == stat){
+                value += mod['value'];
+            }
+       })
+       return value;
+    }
+    
     return AmCharacter;
     
 });
