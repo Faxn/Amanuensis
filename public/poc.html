@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="amanuensisc">
+<head>
+    <title>Amenuensish</title> 
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<div id="content" style="padding-left:3em;" ng-controller="exampleCtrl">
+	<!-- TODO: get rid of ^THIS^ styling, replace with something better-->
+
+	<div style="position: absolute;background-color: #ffaaaa; width: auto;right: 10px; top: 10px;">
+		<h4> DEBUG INFO</h4>
+	currently selected char: {{currentChar}} ( {{party[currentChar].name}} ) <br>	
+	party[currentChar]: {{party[currentChar]}}<br>
+	isCollapsed: {{isCollapsed}}
+	</div>
+	
+	
+	<h2> Amenuensish </h2>
+	<h5> A prototype for the Amenuensis frontend</h5>
+	
+	<!-- party bar!  user selects their char here -->
+	<div class="btn-group">  
+		<button type="button" class="btn btn-primary" ng-model="currentChar" ng-repeat="guy in party" ng-click="setCurrentChar($index)"btn-checkbox>{{$index}}:{{guy.name}} </button>
+	</div>
+	
+	
+	<hr>
+	
+	<div class="row">
+		<div class="col-md-2" ng-click="toggleCollapse('name')"><h4>Name, Description</h4></div>
+		<div class="col-md-10" collapse="isCollapsed.name">
+			<table class="table">
+				<thead>
+					<tr> <th>Name</th>	<th>Class</th>	<th>Race</th>	<th>Alignment</th></tr>
+					<tr> <td><input type="text" ng-model="party[currentChar].name"/></td> <td><input type="text" ng-model="party[currentChar].charclass"/></td> <td><input type="text" ng-model="party[currentChar].race"/></td><td><input type="text" ng-model="party[currentChar].alignment"/></td></tr>
+
+					<tr> <th>Height</th>	<th>Weight</th>	<th>Eyes</th>	<th>Size Mod</th>	</tr>
+					<tr> <td><input type="text" ng-model="party[currentChar].height"/></td> <td><input type="text" ng-model="party[currentChar].weight"/></td> <td><input type="text" ng-model="party[currentChar].eyes"/></td><td><input type="text" ng-model="party[currentChar].size"/></td></tr>
+					
+				<thead>
+			</table>
+		</div>
+	</div>
+	<hr>
+	
+	<div class="row">
+		<div class="col-md-2" ng-click="toggleCollapse('abilities')"><h4>Abilities</h4></div>
+		<div class="col-md-10" collapse="isCollapsed.abilities">
+			<table class="table">
+				<thead>
+					<tr> <th>Abil</th>	<th>Val</th>	<th>Bon</th>	<th>Base</th>	<th>Race</th>	<th>Enh</th></tr>
+					<tr> <th> STR </th>	<td>TODO</td>	<td>TODO</td>	<td><input type="text" ng-model="party[currentChar].STR"/></td>	<td><input type="text" ng-model="party[currentChar].STRrace"/></td>	<td><input type="text" ng-model="party[currentChar].STRenh"/></td></tr>
+					
+					<!-- Maybe make these rows just directives?  That way it would be easier to assemble templates and write code to handle maths -->
+					
+				<thead>
+			</table>
+		</div>
+	</div>
+	<hr>
+	
+	<div class="row">
+		<div class="col-md-2" ng-click="toggleCollapse('classes')"><h4>Classes</h4></div>
+		<div class="col-md-10" collapse="isCollapsed.classes">
+			<table>
+				<thead>
+					<tr>	<th>class</th>	<th>levels</th> </tr>
+				</thead>
+							
+				<tbody>
+					<tr ng-repeat="class in party[currentChar].classes">	
+						<td><input type="text" ng-model="class.name"/></td> <td><input type="text" ng-model="class.lvls"/></td>	<td><button type="button" class="btn btn-danger" ng-click="removeClass($index)">remove</button></td>	
+					</tr>
+					<tr>	<td></td><td></td> <td><button type="button" class="btn btn-primary" ng-click="addClass()">add new</button></td> </tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<hr>
+	
+	<div class="row">
+		<div class="col-md-2" ng-click="toggleCollapse('achpcmb')"><h4>AC, HP, CMB</h4></div>
+		<div class="col-md-10" collapse="isCollapsed.achpcmb">THA STUFFS</div>
+	</div>
+	<hr>
+	
+	<div class="row">
+		<div class="col-md-2" ng-click="toggleCollapse('saves')"><h4>Saves</h4></div>
+		<div class="col-md-10" collapse="isCollapsed.saves">THA STUFFS</div>
+	</div>
+	<hr>
+	
+	<div class="row">
+		<div class="col-md-2" ng-click="toggleCollapse('armor')"><h4>Armor</h4></div>
+		<div class="col-md-10" collapse="isCollapsed.armor">THA STUFFS</div>
+	</div>
+	<hr>
+	
+	<div class="row">
+		<div class="col-md-2" ng-click="toggleCollapse('attacks')"><h4>Attacks</h4></div>
+		<div class="col-md-10" collapse="isCollapsed.attacks">THA STUFFS</div>
+	</div>
+	<hr>
+	
+	<div class="row">
+		<div class="col-md-2" ng-click="toggleCollapse('skills')"><h4>Skills</h4></div>
+		<div class="col-md-10" collapse="isCollapsed.skills">
+			<table>
+				<thead>
+					<tr>	<th>skill</th>	<th>class skill?</th> <th>rank</th> <th>ATT</th> <th>total</th>  <th>Remove skill</th> </tr>
+				</thead>
+							
+				<tbody>
+					<tr ng-repeat="skill in party[currentChar].skills">	
+						<td><input type="text" ng-model="skill.name"/></td> <td>TODO</td>	<td><input type="text" ng-model="skill.ranks"/></td><td>TODO</td><td>TODO</td>	<td> <button type="button" class="btn btn-danger" ng-click="removeSkill($index)">remove</button></td>	
+					</tr>
+					<tr>	<td></td><td></td><td></td><td></td><td></td><td><button type="button" class="btn btn-primary" ng-click="addSkill()">add new</button></td> </tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<hr>
+	
+	<div class="row">
+		<p>Currently rolling for: <em>{{party[currentChar].name}}</em></p>
+		
+		<!-- dropdown for selecting attack, damage, or skill-->
+		<select ng-model="selectedRollOption" ng-options="opt as opt.label for opt in rollOptions"></select>
+		
+		<!--autocompleting input bar for selecting skills -->
+		<p> skill (only applies if you make a skill roll) : <input type="text" ng-model="selectedSkill" typeahead="skill for skill in skillList | filter:$viewValue | limitTo:8" class="form-control"></p>
+		<br><button type='button' class="btn btn-primary btn-lg" ng-click="handleRollRequest(selectedRollOption.value)">roll!</button>
+		<table class="table">
+			<tbody>
+				<tr ng-repeat="roll in rollHistory"> <td>{{roll.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>	<td>{{roll.charName}}</td> <td>{{roll.type}}</td> <td>{{roll.dice}}	<td>{{roll.rollNum}}</td>	</tr>					
+			<tbody>
+		</table>
+		
+	</div>
+	
+
+</div> <!-- /content -->
+    
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+<script src="lib/angular-ui-router.js"></script>  <!--could not find a CDN for up to date version after brief check-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
+
+<script src="js/poc.js"></script>
+
+</body>
+</html>
