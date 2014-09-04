@@ -8,7 +8,9 @@ files : [
     {pattern: 'test/lib/**/*.js', included: true},
     {pattern: 'node_modules/requirejs/require.js', included: true},
     //code
-    {pattern: 'public/js/**/*.js', included: true},
+    {pattern: 'public/js/amanuensis/*.js', included: true},
+    {pattern: 'public/js/app.js', included: true},
+    {pattern: 'public/js/models.js', included: true},
     //tests
     {pattern: 'test/*Provider.js', included: true},
     {pattern: 'test/*Spec.js', included: true},

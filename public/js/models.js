@@ -4,7 +4,7 @@
 
 require(["character"], function(character) {
        
-angular.module('amanuensis.character', [])
+angular.module('Amanuensis')
 
 /**
  * 

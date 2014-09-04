@@ -6,7 +6,7 @@
 
 
 describe('AmCharacter', function() {
-   beforeEach(angular.mock.module('amanuensis.character'));
+   beforeEach(angular.mock.module('Amanuensis'));
      
    var AmCharacter = null;
    
