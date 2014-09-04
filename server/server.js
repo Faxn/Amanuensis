@@ -42,17 +42,6 @@ function logErrorReturn(err, thing){
 //host static files.
 app.use(serveStatic('public/'));
 
-
-//database convience methods
-function addModifier(xpc, modifier){
-    if(modifier.apply_to == null){
-        modifer.apply_to =[xpc_id]
-    } else {
-        modifier.apply_to.push("xpc_id")
-    }
-    //app.db_mod.
-}
-
 //rest api
 app.get('/character_names', function (req, res){
     res.contentType('json');
