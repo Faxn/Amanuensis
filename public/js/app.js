@@ -15,6 +15,14 @@ amanuensis.controller("mainController", function($scope, $http, $resource){
 		{name:'Malthar', text:"Is a bear"}
 	]
 	
+	$scope.characterList=[{name:'not', id:'loaded'}];
+	
+	$http.get('/character_list').success(function(data, status, headers, config){
+		$scope.characterList=data;
+		console.log(characterList);
+	})
+	
+	//If current Id changes grab the data for it
 	$scope.$watch('currentCharacterId', function(newValue){
 		console.log("get character: "+newValue);
 		if(newValue.length >= 12){
@@ -32,7 +40,10 @@ amanuensis.controller("mainController", function($scope, $http, $resource){
 
 amanuensis.directive('amCharacterChooser', function(){
 	dir = {
+		
 		template:"<input ng-model='currentCharacterId'></input><br> \
+				  <select ng-model='currentCharacterId' ng-options='c.id as c.id +\":\"+c.name for c in characterList'>		\
+				  </select>												\
 				  <button ng-click='character.$save()'>Save</button> <br>\
 				  <button ng-click='dump()'>logDump</button>",
 		restrict:'E',

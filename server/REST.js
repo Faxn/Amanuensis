@@ -23,14 +23,18 @@ module.exports.api = function(app){
 	
 	
 	//rest api
-	app.get('/character_names', function (req, res){
+	
+	/**
+	 * Get a list of ids and names of all charactersw in the database.
+	 */
+	app.get('/character_list', function (req, res){
 		res.contentType('json');
-		var names = [];
+		var list = [];
 		app.db_char.find({}).toArray(function(err, chars){
 			for(i in chars){
-				names.push(chars[i].name);
+				list.push({name:chars[i].name, id:chars[i]._id});
 			};
-			res.send(names);
+			res.send(list);
 		})
 		
 	});
