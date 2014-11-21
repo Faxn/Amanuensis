@@ -1,0 +1,8 @@
+
+<div id=CharacterChooser style="border: 1px solid black;">
+	<input ng-model='currentCharacterId'></input><br> 
+	<select ng-model='currentCharacterId' ng-options='c.id as c.id +":"+c.name for c in characterList'></select>												
+	<button ng-click='character.$save()'>Save</button> <br>
+	<button ng-click='character.$delete()'>Delete</button> <br>
+	<button ng-click='dump()'>logDump</button>
+</div>

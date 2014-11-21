@@ -2,7 +2,7 @@
 
 
 
-require(["character"], function(character) {
+require(["amanuensis/character"], function(character) {
        
 angular.module('Amanuensis')
 
