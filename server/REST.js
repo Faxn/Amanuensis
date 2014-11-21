@@ -76,11 +76,28 @@ module.exports.api = function(app){
 		});
 	});
 
+	
+	/** Create a new character.*/
+	app.post('/character', jsonParser, function(req,res){
+		app.db_char.save(req.body, function(err, result){
+			if(err){
+				res.send(410, err)
+			}else{
+				res.send(req.body)
+				res.status(200).end()
+			}
+			
+		});
+	});
+	
+	
 	// update/create a character.
-	app.post('/character', jsonParser, function (req, res){
+	app.post('/character/:id', jsonParser, function (req, res){
 		//console.dir(req)
 		console.log("Updating Character with: ", req.body);
 		
+		
+		//TODO: do something about the id from the url
 		if(req.body._id == undefined){
 			res.status(400)
 			res.send("no _id")
@@ -101,8 +118,8 @@ module.exports.api = function(app){
 		});
 	});
 	
-	// update a character.
-	app.delete('/characters/:id', function (req, res){
+	// remove a character.
+	app.delete('/character/:id', function (req, res){
 		var id = mongo.ObjectID(req.params.id);
 		app.db_char.remove({_id:id}, function(err, result){
 			if(err){
