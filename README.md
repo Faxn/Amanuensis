@@ -16,7 +16,30 @@ Database/Model Goals
 ====================
 
 - Needs to model multiple systems with the same structure
-- needs to syscronize changes from multiple clients. 
+- needs to syscronize changes from multiple clients.
+- Needs to support heiarchal changes, class and system changes need to reflect on Characters.
+
+
+Structure
+=========
+sheets made up of cells
+cells have
+- name/**label**
+- text **content**
+- calculated **value**
+
+
+Development Steps
+=================
+
+1. display cells as name:content table
+2. display cells name|content|value
+3. add support for formula content.
+4. add display for arbitarly positioned cells.
+5. add support for positioning and formatting cells.
+6. add support for inheritance.
+
+
 
 
 Setup

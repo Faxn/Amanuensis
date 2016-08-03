@@ -49,4 +49,38 @@ amanuensis.directive("amCharacterSheet", function(){
 	
 });
 
+amanuensis.controller("sheetController", function($scope, $http, $resource){
+	
+	$scope.sheet = [
+        {label:'Str', content:'12' ,value:''},
+        {label:'Dex', content:'12' ,value:''},
+        {label:'Con', content:'12' ,value:''}
+    ];
+	
+});
+
+amanuensis.directive("amSheetDetail", function(){
+	
+	dir = {
+		templateUrl:"templates/SheetDetail.htm",
+		restrict:'E',
+		
+	}
+	return dir;
+	
+});
+
+amanuensis.directive("amSheetDetailRow", function(){
+	
+	dir = {
+		templateUrl:"templates/SheetDetailRow.htm",
+		restrict:'EA',
+		
+	}
+	return dir;
+	
+});
+
+
+
 /**/

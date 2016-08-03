@@ -30,12 +30,14 @@ module.exports.api = function(app){
 	app.get('/character_list', function (req, res){
 		res.contentType('json');
 		var list = [];
+        /*
 		app.db_char.find({}).toArray(function(err, chars){
 			for(i in chars){
 				list.push({name:chars[i].name, id:chars[i]._id});
 			};
 			res.send(list);
 		})
+        */
 		
 	});
 
@@ -78,8 +80,8 @@ module.exports.api = function(app){
 
 	
 	/** Create a new character.*/
-	app.post('/character', jsonParser, function(req,res){
-		app.db_char.save(req.body, function(err, result){
+	app.post('/sheet', jsonParser, function(req,res){
+		app.db_sheets.save(req.body, function(err, result){
 			if(err){
 				res.send(410, err)
 			}else{

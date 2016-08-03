@@ -13,5 +13,9 @@ angular.module('Amanuensis')
    return character 
 }])
 
+.factory('AmSheet', [function(){
+   return {}
+}])
+
 });
 ;
